@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "5b0d997e-0adf-4c75-b05e-07998d06c2a0",
+		"name": "Korrigans (LPWeb)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERV}}/login?login=korrigans&password=korrigans&ver=1.0",
+					"host": [
+						"{{SERV}}"
+					],
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "korrigans"
+						},
+						{
+							"key": "password",
+							"value": "korrigans"
+						},
+						{
+							"key": "ver",
+							"value": "1.0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERV}}/check",
+					"host": [
+						"{{SERV}}"
+					],
+					"path": [
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Building",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERV}}/buildings/9",
+					"host": [
+						"{{SERV}}"
+					],
+					"path": [
+						"buildings",
+						"9"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "id building",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "XXX",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERV}}/xxx",
+					"host": [
+						"{{SERV}}"
+					],
+					"path": [
+						"xxx"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "XXX/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SERV}}/xxx/1",
+					"host": [
+						"{{SERV}}"
+					],
+					"path": [
+						"xxx",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "XXX",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "field_1",
+							"value": "toto1",
+							"type": "text"
+						},
+						{
+							"key": "field_2",
+							"value": "tutu1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{SERV}}/xxx",
+					"host": [
+						"{{SERV}}"
+					],
+					"path": [
+						"xxx"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "XXX/1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "field_1",
+							"value": "toto1_11",
+							"type": "text"
+						},
+						{
+							"key": "field_2",
+							"value": "tutu1",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{SERV}}/xxx/1",
+					"host": [
+						"{{SERV}}"
+					],
+					"path": [
+						"xxx",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "SERV_DEV",
+			"value": "https://korrigans-ws.fabulapps.com/api/1.0"
+		},
+		{
+			"key": "SERV",
+			"value": "http://localhost:2280/api/1.0"
+		}
+	]
+}

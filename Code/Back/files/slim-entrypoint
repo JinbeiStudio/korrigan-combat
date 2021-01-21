@@ -1,0 +1,22 @@
+#!/bin/bash
+INSTDIR=/var/www/slim
+PROJDIR=.
+
+function die() {
+        echo "Echec d'installation !!!"
+        echo $1
+        exit -1
+}
+
+mkdir -p $INSTDIR
+test -d $INSTDIR || die "Impossible de se deplacer dans le repertoire $INSTDIR"
+cd $INSTDIR
+if [ -z "$(ls -A .)" ]; then
+        composer create-project slim/slim-skeleton $PROJDIR
+        composer require slim/slim:"4.*"
+fi
+
+chmod 700 $INSTDIR/../logs
+chown www-data $INSTDIR/../logs
+
+docker-php-entrypoint "$@"

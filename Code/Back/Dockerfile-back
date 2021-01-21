@@ -1,0 +1,15 @@
+FROM php:7.3-apache
+LABEL maintainer="gilas@bigpapoo.com"
+
+COPY files/slim-entrypoint /usr/local/bin/
+
+RUN apt-get update && apt-get install -y vim less git zip unzip \
+ && docker-php-ext-install pdo pdo_mysql \
+ && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+ && php composer-setup.php --install-dir=/usr/local/bin  --filename=composer \
+ && php -r "unlink('composer-setup.php');" \
+ && a2enmod rewrite \
+ && a2enmod headers
+
+ENTRYPOINT ["slim-entrypoint"]
+CMD ["apache2-foreground"]
