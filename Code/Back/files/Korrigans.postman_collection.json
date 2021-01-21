@@ -54,32 +54,6 @@
 			"response": []
 		},
 		{
-			"name": "Building",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{SERV}}/buildings/9",
-					"host": [
-						"{{SERV}}"
-					],
-					"path": [
-						"buildings",
-						"9"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1",
-							"description": "id building",
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "XXX",
 			"request": {
 				"method": "GET",
