@@ -1,1 +1,5 @@
-/Code/Back/docker-compose.yml
+docker-compose.yml
+/data/www/includes/params.php
+/data/mysql
+/data/slim
+/data/logs
