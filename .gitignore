@@ -1,1 +1,7 @@
-/Code/Back/docker-compose.yml
+Code/Back/docker-compose.yml
+Code/Back/data/mysql
+Code/Back/data/www/slim
+Code/Back/files/php-tweak.ini
+Code/Back/.env
+Code/Back/data/www/includes/params.php
+Code/Back/data/www/logs
