@@ -13,16 +13,13 @@ $app->get('/api/1.0/deck-joueur/{idJoueur}/type/{type}/numero/{numero}', functio
         }
         /** END OF SECURITY CHECK */
 
-        $stmt = $pdo->prepare('SELECT `idCompositionDeck`, `idTroupeJoueur`, compositionDeck.idDeck, compositionDeck.idJoueur  FROM `compositionDeck` INNER JOIN `deck` ON deck.idDeck=compositionDeck.idDeck  WHERE compositionDeck.idJoueur=:idJoueur AND deck.type= :type AND deck.numeroDeck= :numero');
+        $stmt = $pdo->prepare('SELECT `idTroupeJoueur` FROM `compositionDeck` INNER JOIN `deck` ON deck.idDeck=compositionDeck.idDeck  WHERE deck.idJoueur=:idJoueur AND deck.type= :type AND deck.numeroDeck= :numero');
         $stmt->execute(["idJoueur" => $args['idJoueur'], "type" => $args['type'], "numero" => $args['numero']]);
 
         $items = [];
         while ($row = $stmt->fetchObject()) {
             $items[] = [
-                'idCompositionDeck' => $row->idCompositionDeck,
                 'idTroupeJoueur' => $row->idTroupeJoueur,
-                'idDeck' => $row->idDeck,
-                'idJoueur' => $row->idJoueur,
             ];
         }
         $ret = array(
