@@ -23,7 +23,7 @@ $app->get('/api/1.0/deck-joueur/{idJoueur}/type/{type}/numero/{numero}', functio
             ];
         }
         $ret = array(
-            'compositionDeck' => (array) $items,        // Cast as array for security
+            'Deck' . '-' . $args['type'] . '-' . $args['numero'] => (array) $items,        // Cast as array for security
         );
         return buildResponse($resp, $ret);
     } catch (Exception $e) {
