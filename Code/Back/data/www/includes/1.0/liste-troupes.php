@@ -54,7 +54,7 @@ $app->get('/api/1.0/troupe', function ($req, $resp, $args) {
       );
       return buildResponse($resp, $ret);
    } catch (Exception $e) {
-      __logException('Erreur lors de la récupération des troupes', $e);
+      __logException('Erreur lors de la récupération des troupes du jeu', $e);
       return $resp->withStatus(500);   // Internal Server Error
    }
 });
