@@ -13,7 +13,7 @@ $app->get('/api/1.0/troupes-joueur/{idJoueur}', function ($req, $resp, $args) {
         }
         /** END OF SECURITY CHECK */
 
-        $stmt = $pdo->prepare('SELECT `idTroupeJoueur`, `idTroupe`, `idJoueur`, `quantite`, `vie`, `degat`, `portee`, `vitesse`, `agilite`, `niveauTroupe`, `experience`  FROM `troupesJoueur` WHERE `idJoueur`=:idJoueur');
+        $stmt = $pdo->prepare('SELECT `idTroupeJoueur`, `idTroupe`, `idJoueur`, `niveauTroupe`, `experience`  FROM `troupesJoueur` WHERE `idJoueur`=:idJoueur');
         $stmt->execute(["idJoueur" => $args['idJoueur']]);
 
         $items = [];
@@ -22,18 +22,12 @@ $app->get('/api/1.0/troupes-joueur/{idJoueur}', function ($req, $resp, $args) {
                 'idTroupeJoueur' => $row->idTroupeJoueur,
                 'idTroupe' => $row->idTroupe,
                 'idJoueur' => $row->idJoueur,
-                'quantite' => $row->quantite,
-                'vie' => $row->vie,
-                'degat' => $row->degat,
-                'portee' => $row->portee,
-                'vitesse' => $row->vitesse,
-                'agilite' => $row->agilite,
                 'niveauTroupe' => $row->niveauTroupe,
                 'experience' => $row->experience,
             ];
         }
         $ret = array(
-            'troupesJoueur' => (array) $items,        // Cast as array for security
+            'troupesJoueur' . $args['idJoueur'] => (array) $items,        // Cast as array for security
         );
         return buildResponse($resp, $ret);
     } catch (Exception $e) {
