@@ -13,17 +13,18 @@ $app->get('/api/1.0/deck-joueur/{idJoueur}/type/{type}/numero/{numero}', functio
         }
         /** END OF SECURITY CHECK */
 
-        $stmt = $pdo->prepare('SELECT `idTroupeJoueur` FROM `compositionDeck` INNER JOIN `deck` ON deck.idDeck=compositionDeck.idDeck  WHERE deck.idJoueur=:idJoueur AND deck.type= :type AND deck.numeroDeck= :numero');
+        $stmt = $pdo->prepare('SELECT `idTroupeJoueur`, `quantite` FROM `compositionDeck` INNER JOIN `deck` ON deck.idDeck=compositionDeck.idDeck  WHERE deck.idJoueur=:idJoueur AND deck.type= :type AND deck.numeroDeck= :numero');
         $stmt->execute(["idJoueur" => $args['idJoueur'], "type" => $args['type'], "numero" => $args['numero']]);
 
         $items = [];
         while ($row = $stmt->fetchObject()) {
             $items[] = [
                 'idTroupeJoueur' => $row->idTroupeJoueur,
+                'quantite' => $row->quantite
             ];
         }
         $ret = array(
-            'Deck' . '-' . $args['type'] . '-' . $args['numero'] => (array) $items,        // Cast as array for security
+            'deck' . '-' . $args['type'] . '-' . $args['numero'] => (array) $items,        // Cast as array for security
         );
         return buildResponse($resp, $ret);
     } catch (Exception $e) {
