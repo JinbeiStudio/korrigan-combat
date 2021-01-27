@@ -13,7 +13,7 @@ $app->get('/api/1.0/stats-troupes', function ($req, $resp, $args) {
         }
         /** END OF SECURITY CHECK */
 
-        $stmt = $pdo->prepare('SELECT `idStats`, `niveau`, `idTroupe`, `vie`, `degat`, `agilite`, `portee`, `vitesse`  FROM `stats`');
+        $stmt = $pdo->prepare('SELECT `idStats`, `niveau`, `idTroupe`, `vie`, `degat`, `agilite`  FROM `stats`');
         $stmt->execute();
 
         $items = [];
@@ -25,8 +25,6 @@ $app->get('/api/1.0/stats-troupes', function ($req, $resp, $args) {
                 'vie' => $row->vie,
                 'degat' => $row->degat,
                 'agilite' => $row->agilite,
-                'portee' => $row->portee,
-                'vitesse' => $row->vitesse,
             ];
         }
         $ret = array(
