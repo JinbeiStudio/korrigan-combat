@@ -5,3 +5,8 @@ Code/Back/files/php-tweak.ini
 Code/Back/.env
 Code/Back/data/www/includes/params.php
 Code/Back/data/www/logs
+Code/Front/front-korrigans/node_modules
+Code/Front/front-korrigans/.pnp
+Code/Front/front-korrigans/.pnp.js
+Code/Front/front-korrigans/coverage
+Code/Front/front-korrigans/build
