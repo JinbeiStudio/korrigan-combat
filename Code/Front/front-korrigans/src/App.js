@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import Troupes from './deck/Troupes';
+import useTheme from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import './App.css';
-
+/*
+  TODO :
+  npm install @material-ui/core
+*/
 function App() {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+  const css = {};
+
+  if(matches) {
+    css = {
+      width: '100vw'
+    }
+  } else {
+    css = {
+      width: '25em'
+    }
+  }
+
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div class="screen" style={css}>
+      <Troupes />
     </div>
   );
 }
