@@ -8,7 +8,7 @@ function getCaserne($idCaserne) {
    // try..catch.. is already done in caller function
    // Security check is done in caller function
    $pdo = getPDO();
-   $stmt = $pdo->prepare('SELECT `idCaserne`, `idJoueur`, `niveauCarserne` FROM `caserne` WHERE `idCaserne` = :idCaserne'); 
+   $stmt = $pdo->prepare('SELECT `idCaserne`, `idJoueur`, `niveauCaserne` FROM `caserne` WHERE `idCaserne` = :idCaserne'); 
    $stmt->execute([
       'idCaserne' => $idCaserne,
    ]);
@@ -19,7 +19,7 @@ function getCaserne($idCaserne) {
       return [
          'idCaserne' =>$row->idCaserne,
          'idJoueur' => $row->idJoueur,
-         'niveauCarserne' => $row->niveauCarserne,
+         'niveauCaserne' => $row->niveauCaserne,
       ];
    }
 }
