@@ -1,8 +1,8 @@
 <?php
-namespace xxx; // Because each resource has a couple of functions with the same names
+namespace joueur; // Because each resource has a couple of functions with the same names
 
 
-function getResource($id) {
+function getJoueur($id) {
    global $__player_id;
 
    // try..catch.. is already done in caller function
@@ -44,7 +44,7 @@ $app->get('/api/1.0/joueur/{id}', function ($req, $resp, $args) {
       }
       /** END OF SECURITY CHECK */
    
-      $ret = getResource($id);
+      $ret = getJoueur($id);
         
       if (!$ret) {
          __log('Pas de joueur trouvé #' . $id . ' - No record');
