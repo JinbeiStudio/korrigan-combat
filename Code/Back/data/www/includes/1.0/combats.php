@@ -13,8 +13,8 @@ $app->get('/api/1.0/combats/{idJoueur}', function ($req, $resp, $args) {
         }
         /** END OF SECURITY CHECK */
 
-        $stmt = $pdo->prepare('SELECT `idCombat`, `idAttaquant`, `idDefenseur`, `dateCombat`, `gagnant`, `gold` FROM `combats`');
-        $stmt->execute();
+        $stmt = $pdo->prepare('SELECT `idCombat`, `idAttaquant`, `idDefenseur`, `dateCombat`, `gagnant`, `gold` FROM `combats` WHERE idAttaquant=:idJoueur OR idDefenseur=:idJoueur');
+        $stmt->execute(['idJoueur' => $args['idJoueur']]);
 
         $items = [];
         while ($row = $stmt->fetchObject()) {
