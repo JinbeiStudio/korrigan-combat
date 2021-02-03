@@ -10,7 +10,6 @@ function App() {
   return (
     <div className="screen" style={css}>
       <Navbar />
-    
       <Troupes />
     </div>
   );
