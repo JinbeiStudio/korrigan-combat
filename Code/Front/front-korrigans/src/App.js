@@ -1,4 +1,4 @@
-import Troupes from './deck/Troupes';
+import Troupes from './Components/deck/Troupes';
 import './App.css';
 import Navbar from './Components/Navbar/Navbar.js'
 
