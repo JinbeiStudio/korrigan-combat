@@ -1,5 +1,6 @@
 import Troupes from './deck/Troupes';
 import './App.css';
+import Navbar from './Components/Navbar/Navbar.js'
 
 function App() {
   const css = {
@@ -8,6 +9,7 @@ function App() {
 
   return (
     <div className="screen" style={css}>
+      <Navbar />
       <Troupes />
     </div>
   );
