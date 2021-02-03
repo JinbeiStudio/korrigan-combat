@@ -20,6 +20,7 @@ require_once '1.0/joueur.php';
 require_once '1.0/caserne.php';
 require_once '1.0/stats-troupes.php';
 require_once '1.0/formation-troupes.php';
+require_once '1.0/combats.php';
 
 $app->get('/', function ($req, $resp) {
 	return buildResponse($resp, 'Welcome to Korrigans API!');
