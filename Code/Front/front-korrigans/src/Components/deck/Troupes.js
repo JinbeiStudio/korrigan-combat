@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const Troupes = () => {
     
     function getCookie(key) {
@@ -7,6 +9,13 @@ const Troupes = () => {
           return result [1];
         }
     }
+
+    axios.get("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0")
+        .then(res => {
+
+        });
+
+    /*
 
     let header = new Headers();
     header.append('Access-Control-Allow-Credentials', 'true');
@@ -34,7 +43,7 @@ const Troupes = () => {
     console.log(document.cookie);
 
     
-
+    */
     
 
     return (
