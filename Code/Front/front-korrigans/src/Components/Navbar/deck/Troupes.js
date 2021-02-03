@@ -16,7 +16,7 @@ const Troupes = () => {
     })
     .then(data => {
         fetch("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/joueur/1", {
-        credentials: 'same-origin'
+            credentials: 'same-origin'
         })
         .then(res => {
             return res.json();
