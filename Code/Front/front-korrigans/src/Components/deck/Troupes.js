@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const Troupes = () => {
     
     function getCookie(key) {
@@ -10,10 +9,35 @@ const Troupes = () => {
         }
     }
 
-    axios.get("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0")
-        .then(res => {
+    function reqListener () {
+        console.log(this.responseText);
+      }
+      /*
+      $.ajax({
+        type: 'GET',
+        url: 'https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0',
+        xhrFields: {
+            withCredentials: true
+        }
+      });
 
-        });
+      var oReq = new XMLHttpRequest();
+      oReq.onload = reqListener;
+      oReq.open("get", "https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0", true);
+      oReq.withCredentials = true;
+      oReq.send();
+
+
+    axios.defaults.withCredentials = true;
+    axios.get("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0", {
+        method: 'GET',
+        withCredentials: true,
+        crossDomain: true,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(res => console.log(res));
 
     /*
 

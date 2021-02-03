@@ -4,7 +4,8 @@ import Navbar from './Components/Navbar/Navbar.js'
 
 function App() {
   const css = {
-    width: '25em'
+    width: '25em',
+    backgroundColor: 'red'
   }
 
   return (
