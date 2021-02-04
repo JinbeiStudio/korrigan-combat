@@ -16,11 +16,10 @@ require_once '1.0/connection.php';
 require_once '1.0/liste-troupes.php';
 require_once '1.0/troupes-joueur.php';
 require_once '1.0/composition-deck.php';
-<<<<<<< Code/Back/data/www/includes/api_1.0.php
 require_once '1.0/joueur.php';
 require_once '1.0/caserne.php';
 require_once '1.0/stats-troupes.php';
->>>>>>> Code/Back/data/www/includes/api_1.0.php
+require_once '1.0/adversaire.php';
 
 $app->get('/', function ($req, $resp) {
 	return buildResponse($resp, 'Welcome to Korrigans API!');
