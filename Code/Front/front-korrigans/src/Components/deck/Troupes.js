@@ -1,7 +1,69 @@
-import axios from 'axios';
+import './Troupes.css';
+import TroupeList from './TroupesList';
 
 const Troupes = () => {
+
+    // Troupes du joueur 1
+    const troupes = {"troupesJoueur1":
+                        [{
+                          "idTroupeJoueur":"1",
+                          "idTroupe":"1",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"},
+                        {
+                          "idTroupeJoueur":"2",
+                          "idTroupe":"2",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"
+                        },
+                        {
+                            "idTroupeJoueur":"2",
+                            "idTroupe":"7",
+                            "idJoueur":"1",
+                            "niveauTroupe":"1",
+                            "experience":"0"
+                          },
+                          {
+                            "idTroupeJoueur":"2",
+                            "idTroupe":"4",
+                            "idJoueur":"1",
+                            "niveauTroupe":"1",
+                            "experience":"0"
+                          },
+                          {
+                            "idTroupeJoueur":"2",
+                            "idTroupe":"5",
+                            "idJoueur":"1",
+                            "niveauTroupe":"1",
+                            "experience":"0"
+                          },
+                          {
+                            "idTroupeJoueur":"2",
+                            "idTroupe":"6",
+                            "idJoueur":"1",
+                            "niveauTroupe":"1",
+                            "experience":"0"
+                          }]
+                    };
     
+    return (
+        <div className="troupes-disponibles">
+            <div class="titre-troupes">
+                <p>Troupes débloquées</p>
+            </div>
+            <div className="troupes">
+                <TroupeList troupes={troupes.troupesJoueur1}/>
+            </div>
+        </div>
+    );
+};
+
+export default Troupes;
+
+
+                     /*
     function getCookie(key) {
         const regexp = new RegExp(`.*${key}=([^;]*)`);
         const result = regexp.exec(document.cookie);
@@ -13,7 +75,7 @@ const Troupes = () => {
     function reqListener () {
         console.log(this.responseText);
       }
-      /*
+      
       $.ajax({
         type: 'GET',
         url: 'https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0',
@@ -69,13 +131,3 @@ const Troupes = () => {
 
     
     */
-    
-
-    return (
-        <div>
-            <p>Liste des troupes disponibles</p>
-        </div>
-    );
-};
-
-export default Troupes;

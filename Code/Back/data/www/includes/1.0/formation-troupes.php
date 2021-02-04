@@ -32,6 +32,7 @@ $app->get('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args)
         $ret = array(
             'formationTroupes' => (array) $items,        // Cast as array for security
         );
+
         return buildResponse($resp, $ret);
     } catch (Exception $e) {
         __logException('Erreur lors de la récupération des troupes en formation', $e);
@@ -87,6 +88,45 @@ function checkTroupeDeck($idJoueur, $idTroupe)
     }
 }
 
+function getPoidsDeck($idJoueur, $idDeck)
+{
+    $pdo = getPDO();
+    $stmt = $pdo->prepare('SELECT SUM(listeTroupe.poids*compositionDeck.quantite) AS result FROM listeTroupe INNER JOIN troupesJoueur ON listeTroupe.idTroupe=troupesJoueur.idTroupe INNER JOIN compositionDeck ON troupesJoueur.idTroupeJoueur = compositionDeck.idTroupeJoueur INNER JOIN deck ON compositionDeck.idDeck = deck.idDeck WHERE compositionDeck.idDeck=:idDeck AND deck.idJoueur=:idJoueur');
+    $stmt->execute(["idDeck" => $idDeck, "idJoueur" => $idJoueur]);
+
+    if (!($row = $stmt->fetchObject())) {
+        return FALSE;
+    } else {
+        return $row->result;
+    }
+}
+
+function getMaxPoidsDeck($idJoueur)
+{
+    $pdo = getPDO();
+    $stmt = $pdo->prepare('SELECT limiteDeck FROM paliersNiveauJoueur INNER JOIN players ON paliersNiveauJoueur.niveauJoueur=players.level WHERE players.id=:idJoueur AND players.level = paliersNiveauJoueur.niveauJoueur');
+    $stmt->execute(["idJoueur" => $idJoueur]);
+
+    if (!($row = $stmt->fetchObject())) {
+        return FALSE;
+    } else {
+        return $row->limiteDeck;
+    }
+}
+
+function getPoidsUnite($idTroupeJoueur)
+{
+    $pdo = getPDO();
+    $stmt = $pdo->prepare('SELECT poids FROM listeTroupe INNER JOIN troupesJoueur ON listeTroupe.idTroupe=troupesJoueur.idTroupe WHERE idTroupeJoueur=:idTroupeJoueur');
+    $stmt->execute(["idTroupeJoueur" => $idTroupeJoueur]);
+
+    if (!($row = $stmt->fetchObject())) {
+        return FALSE;
+    } else {
+        return $row->poids;
+    }
+}
+
 $app->post('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args) {
     //global $__player_id;
 
@@ -96,6 +136,14 @@ $app->post('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args
     $quantite = $params['quantite'];
     $idDeck = $params['idDeck'];
     $idJoueur = $args['idJoueur'];
+    $poidsDeck = getPoidsDeck($idJoueur, $idDeck);
+    $maxPoidsDeck = getMaxPoidsDeck($idJoueur);
+    $poidsFormation = getPoidsUnite($idTroupeJoueur) * $quantite;
+
+    if ($poidsDeck + $poidsFormation > $maxPoidsDeck) {
+        __log('Problème Post Formation Troupes - Le poids des troupes à former dépasse la limite du deck');
+        return $resp->withStatus(400);   // Bad request
+    }
 
     if (empty($quantite)) {
         __log('Problème Post Formation Troupes - Quantite de la troupe manquant');
@@ -133,10 +181,6 @@ $app->post('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args
         $dateFin = $now->modify("+{$tempsFormation} second");
         $dateFinFormat = $dateFin->format("Y-m-d H:i:s");
 
-        //Nom event
-        /*         $nameEvent = "formation-troupes-joueur-$idJoueur-troupeJoueur-$idTroupeJoueur-quantite-$quantite-datefin-" . $dateFin->format("d/m/Y-H:i:s"); */
-        $nameEvent = "test";
-
         //Vérification si il y a déjà une troupe dans le deck
         $checkExist = checkTroupeDeck($idJoueur, $idTroupeJoueur);
 
@@ -145,6 +189,9 @@ $app->post('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args
         $stmt->execute(["idJoueur" => $idJoueur, "idTroupeJoueur" => $idTroupeJoueur, "idDeck" => $idDeck, "quantiteFormation" => $quantite, "dateDebutFormation" => $dateDebut->format("Y-m-d H:i:s"), "dateFinFormation" => $dateFin->format("Y-m-d H:i:s")]);
 
         $id = $pdo->lastInsertId();
+
+        //Nom event
+        $nameEvent = "formation$id";
 
         //Création d'un event mysql pour ajouter la quantité de troupes dans le deck, et supprimer la ligne dans la table formation
         if ($checkExist == FALSE) {

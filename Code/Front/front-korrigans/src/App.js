@@ -3,13 +3,9 @@ import './App.css';
 import Navbar from './Components/Navbar/Navbar.js'
 
 function App() {
-  const css = {
-    width: '25em',
-    backgroundColor: 'red'
-  }
 
   return (
-    <div className="screen" style={css}>
+    <div className="screen">
       <Navbar />
       <Troupes />
     </div>
