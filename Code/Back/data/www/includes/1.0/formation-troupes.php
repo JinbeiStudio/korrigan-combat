@@ -181,9 +181,6 @@ $app->post('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args
         $dateFin = $now->modify("+{$tempsFormation} second");
         $dateFinFormat = $dateFin->format("Y-m-d H:i:s");
 
-        //Nom event
-        $nameEvent = "formation$idJoueur$idTroupeJoueur$idDeck$quantite";
-
         //Vérification si il y a déjà une troupe dans le deck
         $checkExist = checkTroupeDeck($idJoueur, $idTroupeJoueur);
 
@@ -192,6 +189,9 @@ $app->post('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args
         $stmt->execute(["idJoueur" => $idJoueur, "idTroupeJoueur" => $idTroupeJoueur, "idDeck" => $idDeck, "quantiteFormation" => $quantite, "dateDebutFormation" => $dateDebut->format("Y-m-d H:i:s"), "dateFinFormation" => $dateFin->format("Y-m-d H:i:s")]);
 
         $id = $pdo->lastInsertId();
+
+        //Nom event
+        $nameEvent = "formation$id";
 
         //Création d'un event mysql pour ajouter la quantité de troupes dans le deck, et supprimer la ligne dans la table formation
         if ($checkExist == FALSE) {
