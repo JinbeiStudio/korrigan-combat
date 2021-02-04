@@ -1,0 +1,12 @@
+.icon-troupe {
+    width: 5em;
+    height: 5em;
+    position: relative;
+    overflow: hidden;
+}
+
+.icon-troupe img {
+    position: absolute;
+    top: -0.80em;
+    left: -0.60em;
+}

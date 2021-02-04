@@ -4,3 +4,11 @@
     font-family: "Kreon";
     font-size: 1.05em;
 }
+
+.troupes {
+    display: flex;
+}
+
+.troupes div {
+    margin-left: 0.5em;
+}

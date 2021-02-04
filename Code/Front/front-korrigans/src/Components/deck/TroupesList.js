@@ -1,3 +1,4 @@
+import './TroupesList.css';
 import IconTroupe from './IconTroupe';
 
 const TroupesList = ({ troupes }) => {

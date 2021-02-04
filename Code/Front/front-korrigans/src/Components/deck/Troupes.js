@@ -21,7 +21,7 @@ const Troupes = () => {
                     };
     
     return (
-        <div>
+        <div className="troupes">
             <TroupeList troupes={troupes.troupesJoueur1}/>
         </div>
     );
