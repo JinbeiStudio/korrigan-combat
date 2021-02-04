@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const Troupes = () => {
     
     function getCookie(key) {
