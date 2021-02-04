@@ -1,0 +1,6 @@
+.screen {
+    box-sizing: border-box;
+    width: 25em;
+    height: 100vh;
+    border: 1px solid lightgray;
+}
