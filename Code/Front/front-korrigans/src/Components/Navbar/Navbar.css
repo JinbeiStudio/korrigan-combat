@@ -1,0 +1,24 @@
+.NavbarItems{
+    background-color: #2a5bab;
+    width: 25em;
+    color: white;
+}
+
+.bloc-gold, .bloc-ligue-point, .bloc-xp{
+    border:solid 0.5px black;
+    border-radius: 10px;
+    width: 100px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    background-color: #183566;
+}
+
+.bloc-gold p{
+    text-align: center;
+    margin-left: 40px;
+}
+
+.icon-gold{
+    width: 15%;
+}
