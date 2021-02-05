@@ -12,9 +12,9 @@ const TroupesList = ({ troupes }) => {
         setPopupState(!popupState);  
         setpopupTroupeState(troupes.find(element => element.idTroupe == idTroupe));
     }
-
+    const index = 0;
     return [
-        <Popup key="555" popupOpen={popupState} onPopupClick={togglePopup} infos={popupTroupeState} />,
+        <Popup key={index} popupOpen={popupState} onPopupClick={togglePopup} infos={popupTroupeState} />,
         troupes.map(data => {
             return <IconTroupe onTroupeClick={togglePopup} key={data.idTroupeJoueur} level={data.niveauTroupe} troupe={data.idTroupe} />
         })

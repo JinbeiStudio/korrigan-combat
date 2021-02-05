@@ -11,7 +11,6 @@ const IconTroupe = ({ level, troupe, onTroupeClick }) => {
             <span className="level">{levelText}</span>
         </div>
     );
-
 }
 
 export default IconTroupe;
