@@ -1,24 +1,66 @@
 .NavbarItems{
     background-color: #2a5bab;
-    width: 25em;
+    width: 23.7em;
+    height: 95px;
     color: white;
 }
 
-.bloc-gold, .bloc-ligue-point, .bloc-xp{
+.bloc-nav-elements{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.bloc-gold, .bloc-ligue-point{
     border:solid 0.5px black;
     border-radius: 10px;
-    width: 100px;
+    width: 130px;
     height: 30px;
     display: flex;
     align-items: center;
     background-color: #183566;
 }
 
-.bloc-gold p{
+.bloc-gold p, .bloc-ligue-point p{
     text-align: center;
-    margin-left: 40px;
+    font-size: 20px;
+}
+
+.bloc-ligue-point p {
+    margin-left: 20px;
 }
 
 .icon-gold{
-    width: 15%;
+    width: 50px;
+    margin-bottom: 5px;
 }
+
+.icon-ligue{
+    width: 35px;
+    margin-left: 5px;
+}
+
+progress{
+    border:solid 0.5px black;
+    border-radius: 10px;
+    width: 175px;
+    height: 30px;
+    background-color: #183566;
+}
+
+progress[value] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: solid 0.5px black;
+    border-radius: 10px;
+  }
+  
+  progress[value]::-moz-progress-bar{
+    background-color: #4dd332;
+    border-radius: 10px;
+  }
+
+  progress[value]::-webkit-progress-value{
+    background-color: #4dd332;
+    border-radius: 10px;
+  }
