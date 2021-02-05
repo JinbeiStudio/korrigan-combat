@@ -33,3 +33,15 @@
     top: -1.25em;
     margin: 0 0.7em;
 }
+
+.troupe-name {
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    top: -1.7em;
+    text-align: center;
+}
+
+.troupe-icon {
+    margin: 1em;
+}
