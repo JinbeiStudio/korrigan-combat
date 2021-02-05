@@ -43,17 +43,18 @@ class Navbar extends React.Component{
     } else {*/
       return (
         <nav className="NavbarItems">
-            <Clock />
+          <Clock />
+          <div className="bloc-nav-elements">
             <div className="bloc-gold">
-              <img src="/images/adv_gold-icon.png" className="icon-gold"/>
-              <p>gold</p>
+              <img src="/images/glob_mini-gold.png" className="icon-gold"/>
+              <p>73,803</p>
             </div>
             <div className="bloc-ligue-point">
-              <p>ligue points</p>
+              <img src="/images/glob_mini-crown-power.png" className="icon-ligue"/>
+              <p>1340</p>
             </div>
-            <div className="bloc-xp">
-              <p>xp</p>
-            </div>
+            <progress className="bloc-xp" max="100" value="70" />
+          </div>
         </nav>
       );
     }
