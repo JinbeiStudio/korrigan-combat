@@ -17,8 +17,7 @@
     position: absolute;
     box-sizing: border-box;
     margin: 5%;
-    padding: 0.7em;
-    padding-top: 1.5em;
+    padding-top: 1em;
     width: 90%;
     background: #764f3d;
     color: white;
@@ -53,4 +52,14 @@
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
+    padding: 0.7em;
+}
+
+.middle-popup {
+    padding: 0.7em;
+    padding-bottom: 0;
+}
+
+.middle-popup .icon-troupe {
+    font-size: 0.95em;
 }

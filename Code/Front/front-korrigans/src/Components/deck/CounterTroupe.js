@@ -1,15 +1,13 @@
 import './CounterTroupe.css';
 import Button from './Button';
 
-const CounterTroupe = () => {
-
-    let counter = 1;
+const CounterTroupe = ({ counter, add, remove }) => {
 
     return (
         <div className="counter-troupe">
-            <Button text={"-"} />
+            <Button onButtonClick={remove} text={"-"} />
             <span className="span-counter">{counter}</span>
-            <Button text={"+"} />
+            <Button onButtonClick={add} text={"+"} />
         </div>
     );
 }

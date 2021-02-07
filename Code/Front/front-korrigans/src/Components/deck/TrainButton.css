@@ -7,6 +7,8 @@
     width: 6em;
     height: 2.5em;
     outline: none;
+    display: grid;
+    place-content: center;
     box-shadow: inset 0px 3px 1px #688739;
 }
 
