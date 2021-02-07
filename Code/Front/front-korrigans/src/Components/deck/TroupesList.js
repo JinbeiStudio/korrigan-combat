@@ -18,17 +18,40 @@ const TroupesList = ({ troupes }) => {
     const [popupState, setPopupState] = useState(false);
     const [popupTroupeState, setpopupTroupeState] = useState(troupes[0]);
     const [statistiquesState, setStatistiqueState] = useState(all_troupes.listeTroupes[0]);
+    const [nbTroupe, setNbTroupe] = useState(1);
+
+    const addTroupe = () => {
+        if (nbTroupe < 50) {
+            let count = nbTroupe + 1;
+            setNbTroupe(count);
+        }
+    }
+
+    const removeTroupe = () => {
+        if (nbTroupe > 1) {
+            let count = nbTroupe - 1;
+            setNbTroupe(count);
+        }
+    }
 
     const togglePopup = (event, idTroupe) => {
         setPopupState(!popupState);  
-        setpopupTroupeState(troupes.find(element => element.idTroupe == idTroupe));
-
-        setStatistiqueState(all_troupes.listeTroupes.find(element => element.idTroupe == idTroupe));
+        setpopupTroupeState(troupes.find(element => element.idTroupe === idTroupe));
+        setNbTroupe(1);
+        setStatistiqueState(all_troupes.listeTroupes.find(element => element.idTroupe === idTroupe));
     }
 
     const index = 0;
     return [
-        <Popup key={index} popupOpen={popupState} onPopupClick={togglePopup} infos={popupTroupeState} stats={statistiquesState} />,
+        <Popup key={index} 
+               popupOpen={popupState} 
+               nbTroupe={nbTroupe} 
+               addTroupe={addTroupe} 
+               removeTroupe={removeTroupe} 
+               onPopupClick={togglePopup} 
+               infos={popupTroupeState} 
+               stats={statistiquesState} 
+        />,
         troupes.map(data => {
             return <IconTroupe onTroupeClick={togglePopup} key={data.idTroupeJoueur} level={data.niveauTroupe} troupe={data.idTroupe} />
         })

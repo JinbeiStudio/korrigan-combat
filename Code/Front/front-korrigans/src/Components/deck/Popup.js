@@ -2,28 +2,13 @@ import './Popup.css';
 import IconTroupe from './IconTroupe';
 import CounterTroupe from './CounterTroupe';
 import TrainButton from './TrainButton';
+import StatsTroupe from './StatsTroupe';
 import { useState } from 'react';
 
-const Popup = ({ popupOpen, onPopupClick, infos, stats }) => {
-
-    const [nbTroupe, setNbTroupe] = useState(1);
+const Popup = ({ popupOpen, onPopupClick, infos, stats, addTroupe, nbTroupe, removeTroupe }) => {
 
     const disabledClick = (event, idTroupe) => {
         event.stopPropagation();
-    }
-
-    const addTroupe = () => {
-        if (nbTroupe < 50) {
-            let count = nbTroupe + 1;
-            setNbTroupe(count);
-        }
-    }
-
-    const removeTroupe = () => {
-        if (nbTroupe > 1) {
-            let count = nbTroupe - 1;
-            setNbTroupe(count);
-        }
     }
 
     const title_bar_popup = "/images/title_bar.png";
@@ -44,14 +29,15 @@ const Popup = ({ popupOpen, onPopupClick, infos, stats }) => {
                 }} 
                 className="popup-inner">
                 <div>
-                    <img className="title-bar" src={title_bar_popup} />
+                    <img className="title-bar" src={title_bar_popup} alt="" />
                     <h2 className="troupe-name">{stats.nomTroupe}</h2>
                 </div>
                 <div className="middle-popup">
                     <IconTroupe onTroupeClick={disabledClick} className="troupe-icon" level={infos.niveauTroupe} troupe={infos.idTroupe} />
+                    <StatsTroupe stats={stats} nbTroupe={nbTroupe} />
                 </div>
                 <div className="bottom-popup">
-                    <CounterTroupe counter={nbTroupe} add={addTroupe} remove={removeTroupe} />
+                    <CounterTroupe counter={nbTroupe} stats={stats} add={addTroupe} remove={removeTroupe} />
                     <TrainButton text="Entrainer" />
                 </div>
             </div>

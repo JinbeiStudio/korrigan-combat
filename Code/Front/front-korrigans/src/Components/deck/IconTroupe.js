@@ -2,12 +2,12 @@ import './IconTroupe.css';
 
 const IconTroupe = ({ level, troupe, onTroupeClick }) => {
 
-    const image = "/images/troupes/" + troupe + ".png";
-    const levelText = "Level " + level;
+    const image = `/images/troupes/${troupe}.png`;
+    const levelText = `Level ${level}`;
 
     return (
         <div onClick={(event) => onTroupeClick(event, troupe)} className="icon-troupe">
-            <img src={image} />
+            <img src={image} alt={troupe} alt={troupe} />
             <span className="level">{levelText}</span>
         </div>
     );

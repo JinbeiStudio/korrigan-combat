@@ -53,13 +53,18 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding: 0.7em;
+    padding-top: 1.4em;
 }
 
 .middle-popup {
     padding: 0.7em;
     padding-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .middle-popup .icon-troupe {
     font-size: 0.95em;
+    width: 5.2em;
 }
