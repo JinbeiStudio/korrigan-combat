@@ -19,6 +19,13 @@ const Troupes = () => {
                           "experience":"0"
                         },
                         {
+                          "idTroupeJoueur":"3",
+                          "idTroupe":"3",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"
+                        },
+                        {
                           "idTroupeJoueur":"7",
                           "idTroupe":"7",
                           "idJoueur":"1",
@@ -42,6 +49,13 @@ const Troupes = () => {
                         {
                           "idTroupeJoueur":"6",
                           "idTroupe":"6",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"
+                        },
+                        {
+                          "idTroupeJoueur":"8",
+                          "idTroupe":"8",
                           "idJoueur":"1",
                           "niveauTroupe":"1",
                           "experience":"0"
