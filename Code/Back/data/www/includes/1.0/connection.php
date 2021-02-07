@@ -30,6 +30,7 @@ $app->get('/api/1.0/login', function ($req, $resp, $args) {
       setTheCookie($token);
 
       $ret = array(
+         'token'=>$token,
          'server_time' => time(),
          'player'=>array(
             'id' => (int)$__player_id,
@@ -94,4 +95,3 @@ $app->get('/api/1.0/logout', function ($req, $resp, $args) {
       return $resp->withStatus(500);   // Internal Server Error
    }
 });
-?>
