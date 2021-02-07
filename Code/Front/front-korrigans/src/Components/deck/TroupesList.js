@@ -19,12 +19,11 @@ const TroupesList = ({ troupes }) => {
     const [popupTroupeState, setpopupTroupeState] = useState(troupes[0]);
     const [statistiquesState, setStatistiqueState] = useState(all_troupes.listeTroupes[0]);
 
-    const togglePopup = (idTroupe) => {
+    const togglePopup = (event, idTroupe) => {
         setPopupState(!popupState);  
         setpopupTroupeState(troupes.find(element => element.idTroupe == idTroupe));
 
         setStatistiqueState(all_troupes.listeTroupes.find(element => element.idTroupe == idTroupe));
-        console.log(statistiquesState);
     }
 
     const index = 0;

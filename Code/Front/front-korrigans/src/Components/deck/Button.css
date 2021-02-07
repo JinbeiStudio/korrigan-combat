@@ -1,0 +1,41 @@
+.button {
+    position: relative;
+    border: solid 2.2px #5a2f13;
+    border-radius: 10px;
+    background: linear-gradient(#e9af24, #e39128);
+    color: white;
+    width: 2.5em;
+    height: 2.5em;
+    outline: none;
+    box-shadow: inset 0px 4px 1px #e39128;
+}
+
+.button::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: 11px;
+    border: 1.5px solid #3c2d22;
+}
+
+.button:hover {
+    background: linear-gradient(#d8a121, #cc8323);
+    box-shadow: inset 0px 4px 1px #b47420;
+    cursor: pointer;
+    color: whitesmoke;
+}
+
+.button:active {
+    box-shadow: inset 0px 5px 1px #b47420;
+    background: linear-gradient(#eeb225, #bb781f);
+
+}
+
+.button span {
+    font-size: 1.7em;
+    filter: drop-shadow(0px 0px 1px black);
+}

@@ -1,0 +1,41 @@
+.train-button {
+    position: relative;
+    border: solid 2.2px #62893b;
+    border-radius: 10px;
+    background: linear-gradient(#b3d33c, #648539);
+    color: white;
+    width: 6em;
+    height: 2.5em;
+    outline: none;
+    box-shadow: inset 0px 3px 1px #688739;
+}
+
+.train-button::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -5px;
+    left: -5px;
+    right: -4.5px;
+    bottom: -5px;
+    border-radius: 12px;
+    border: 3px solid #3c2d22;
+}
+
+.train-button:hover {
+    background: linear-gradient(#a2c037, #4f692d);
+    box-shadow: inset 0px 3px 1px #4e642a;
+    border: solid 2.2px #4e6d2f;
+    cursor: pointer;
+    color: whitesmoke;
+}
+
+.train-button:active {
+    box-shadow: inset 0px 4px 1px #5c7732;
+    background: linear-gradient(#a2c037, #67883b);
+
+}
+
+.train-button span {
+    font-size: 1em;
+}
