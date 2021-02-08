@@ -1,5 +1,11 @@
 <?php
-namespace caserne; 
+
+namespace caserne;
+
+/* ------- Paliers experience et chargement joueur par niveau --------------- */
+/* ------------------ Endpoint : /api/1.0/paliers-joueur -------------------- */
+/* ------------------------------ Method : GET ------------------------------ */
+/* ------------------------- Auteur : Maxime Sidoit ------------------------- */
 
 $app->get('/api/1.0/paliers-joueur', function ($req, $resp, $args) {
    //global $__player_id;
@@ -11,12 +17,12 @@ $app->get('/api/1.0/paliers-joueur', function ($req, $resp, $args) {
          return $resp->withStatus(401);   // Unauthorized
       }
       /** END OF SECURITY CHECK */
-   
-      $stmt = $pdo->prepare('SELECT `niveauJoueur`, `experienceRequise`, `limiteChargement` FROM `paliersNiveauJoueur`'); 
+
+      $stmt = $pdo->prepare('SELECT `niveauJoueur`, `experienceRequise`, `limiteChargement` FROM `paliersNiveauJoueur`');
       $stmt->execute();
-      
-      $items= [];
-      while ($row = $stmt->fetchObject()){
+
+      $items = [];
+      while ($row = $stmt->fetchObject()) {
          $items[] = [
             'niveauJoueur' => $row->niveauJoueur,
             'experienceRequise' => $row->experienceRequise,
@@ -29,7 +35,8 @@ $app->get('/api/1.0/paliers-joueur', function ($req, $resp, $args) {
       );
       return buildResponse($resp, $ret);
    } catch (Exception $e) {
-      __logException('Erreur lors de la récupération des données des paliers des joueurs');
+      __logException('Erreur lors de la récupération des données des paliers des joueurs', $e);
       return $resp->withStatus(500);   // Internal Server Error
    }
 });
+/* -------------------------------------------------------------------------- */
