@@ -22,8 +22,13 @@ class Clock extends React.Component {
     }
     
     render() {
+      const style = {
+        paddingLeft:"20px",
+        paddingTop:"10px",
+        fontSize:"16px"
+      }
       return(
-        <div>{this.state.date}</div>
+        <div style={style}>{this.state.date}</div>
       );
     }
   }

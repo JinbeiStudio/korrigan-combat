@@ -1,0 +1,22 @@
+.statistiques-troupe {
+    display: grid;
+    grid-template-columns: 1fr 0.5fr;
+    grid-template-rows: repeat(2, 1fr);
+    width: 12em;
+    padding-left: 0.7em;
+}
+
+.statistiques-troupe div {
+    display: flex;
+    align-items: center;
+}
+
+.statistiques-troupe div p {
+    margin: 0;
+    font-size: 0.8em;
+}
+
+.temps-formation {
+    box-sizing: border-box;
+    padding: 5px;
+}

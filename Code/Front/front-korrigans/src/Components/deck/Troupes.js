@@ -17,12 +17,59 @@ const Troupes = () => {
                           "idJoueur":"1",
                           "niveauTroupe":"1",
                           "experience":"0"
+                        },
+                        {
+                          "idTroupeJoueur":"3",
+                          "idTroupe":"3",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"
+                        },
+                        {
+                          "idTroupeJoueur":"7",
+                          "idTroupe":"7",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"
+                        },
+                        {
+                          "idTroupeJoueur":"4",
+                          "idTroupe":"4",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"
+                        },
+                        {
+                          "idTroupeJoueur":"5",
+                          "idTroupe":"5",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"
+                        },
+                        {
+                          "idTroupeJoueur":"6",
+                          "idTroupe":"6",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"
+                        },
+                        {
+                          "idTroupeJoueur":"8",
+                          "idTroupe":"8",
+                          "idJoueur":"1",
+                          "niveauTroupe":"1",
+                          "experience":"0"
                         }]
                     };
     
     return (
-        <div className="troupes">
-            <TroupeList troupes={troupes.troupesJoueur1}/>
+        <div className="troupes-disponibles">
+            <div className="titre-troupes">
+                <p>Troupes débloquées</p>
+            </div>
+            <div className="troupes">
+                <TroupeList troupes={troupes.troupesJoueur1}/>
+            </div>
         </div>
     );
 };
