@@ -1,6 +1,6 @@
 <?php
 
-namespace caserne;
+namespace paliersJoueur;
 
 /* ------- Paliers experience et chargement joueur par niveau --------------- */
 /* ------------------ Endpoint : /api/1.0/paliers-joueur -------------------- */
