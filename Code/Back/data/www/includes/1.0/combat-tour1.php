@@ -145,7 +145,7 @@ function getDeck($idJoueur, $type, $numero)
 function statsTroupe($idTroupeJoueur)
 {
     $pdo = getPDO();
-    $stmt = $pdo->prepare('SELECT `vie`, `degat`, `agilite`, `portee`, `vitesse`, `capaciteTransport` FROM `listeTroupe` INNER JOIN `stats` ON listeTroupe.idTroupe=stats.idTroupe INNER JOIN `troupesJoueur` ON troupesJoueur.idTroupe=stats.idTroupe WHERE troupesJoueur.idTroupeJoueur=:idTroupeJoueur');
+    $stmt = $pdo->prepare('SELECT `vie`, `degat`, `agilite`, `portee`, `vitesse`, `capaciteTransport` FROM `listeTroupe` INNER JOIN `stats` ON listeTroupe.idTroupe=stats.idTroupe INNER JOIN `troupesJoueur` ON troupesJoueur.idTroupe=stats.idTroupe WHERE troupesJoueur.idTroupeJoueur=:idTroupeJoueur AND troupesJoueur.niveauTroupe=stats.niveau');
     $stmt->execute(["idTroupeJoueur" => $idTroupeJoueur]);
 
     $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
