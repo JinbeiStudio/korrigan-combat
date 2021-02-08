@@ -3,6 +3,28 @@ import TroupeList from './TroupesList';
 
 const Troupes = () => {
 
+  let header = new Headers();
+  header.append('Access-Control-Allow-Credentials', 'true');
+  header.append('Content-type', 'application/json');
+
+  fetch("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0", {
+      credentials: 'same-origin'
+  })
+      .then(res => {  
+
+
+          fetch("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/joueur/1", {
+              credentials: 'same-origin',
+              headers: header
+          })
+              .then(res => {
+                  return res.json();
+              })
+              .then(result => {
+                      console.log(result);
+              });
+      });
+
     // Troupes du joueur 1
     const troupes = {"troupesJoueur1":
                         [{
