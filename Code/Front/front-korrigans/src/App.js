@@ -5,13 +5,11 @@ import NavFooter from './Components/Footer/NavFooter';
 
 function App() {
   return (
-    <div className="Background">
       <div className="screen">
             <Navbar />
             <Troupes />
             <NavFooter />
-          </div>
-    </div>
+      </div>
   );
 }
 
