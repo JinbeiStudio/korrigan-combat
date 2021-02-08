@@ -11,9 +11,12 @@ const Troupes = () => {
       credentials: 'same-origin'
   })
       .then(res => {  
+        var oReq = new XMLHttpRequest();
+        oReq.open("get", "https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/joueur/1", true);
+        oReq.withCredentials = true;
+        oReq.send();
 
-
-          fetch("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/joueur/1", {
+          fetch("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/troupes", {
               credentials: 'same-origin',
               headers: header
           })
