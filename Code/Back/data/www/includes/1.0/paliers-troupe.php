@@ -2,6 +2,11 @@
 
 namespace statsTroupes;
 
+/* -------------------- Paliers d'expériences des troupes --------------------*/
+/* ------------------ Endpoint : /api/1.0/paliers-troupes ------------------- */
+/* ------------------------------ Method : GET ------------------------------ */
+/* ------------------------- Auteur : Julien Gabriel ------------------------ */
+
 $app->get('/api/1.0/paliers-troupe', function ($req, $resp, $args) {
     try {
         //global $__player_id;
@@ -32,3 +37,4 @@ $app->get('/api/1.0/paliers-troupe', function ($req, $resp, $args) {
         return $resp->withStatus(500);   // Internal Server Error
     }
 });
+/* -------------------------------------------------------------------------- */
