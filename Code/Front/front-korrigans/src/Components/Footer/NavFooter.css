@@ -1,0 +1,15 @@
+footer{
+    display: flex;
+}
+
+.nav-bloc{
+    background-color: #183566;
+    width: 100px;
+    height: 100px;
+    border: solid #4969a1 0.5px;
+}
+
+.nav-bloc img{
+    width: 100px;
+    margin-top: 10px;
+}
