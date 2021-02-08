@@ -2,6 +2,11 @@
 
 namespace statsTroupes;
 
+/* -------------------- Statistiques des troupes du jeu ----------------------*/
+/* -------------------- Endpoint : /api/1.0/stats-troupes ------------------- */
+/* ------------------------------ Method : GET ------------------------------ */
+/* ------------------------- Auteur : Julien Gabriel ------------------------ */
+
 $app->get('/api/1.0/stats-troupes', function ($req, $resp, $args) {
     try {
         //global $__player_id;
@@ -36,3 +41,4 @@ $app->get('/api/1.0/stats-troupes', function ($req, $resp, $args) {
         return $resp->withStatus(500);   // Internal Server Error
     }
 });
+/* -------------------------------------------------------------------------- */

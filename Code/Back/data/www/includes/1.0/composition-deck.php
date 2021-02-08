@@ -2,6 +2,11 @@
 
 namespace troupesJoueur;
 
+/* ------------------ Composition du deck d'un joueur ------------------------*/
+/*  Endpoint : /api/1.0/deck-joueur/{idJoueur}/type{type}/numero/{numero} --- */
+/* ------------------------------ Method : GET ------------------------------ */
+/* ------------------------- Auteur : Julien Gabriel ------------------------ */
+
 $app->get('/api/1.0/deck-joueur/{idJoueur}/type/{type}/numero/{numero}', function ($req, $resp, $args) {
     try {
         //global $__player_id;
@@ -32,3 +37,4 @@ $app->get('/api/1.0/deck-joueur/{idJoueur}/type/{type}/numero/{numero}', functio
         return $resp->withStatus(500);   // Internal Server Error
     }
 });
+/* -------------------------------------------------------------------------- */

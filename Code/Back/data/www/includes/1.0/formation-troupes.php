@@ -4,6 +4,11 @@ namespace formationTroupes;
 
 use DateTime;
 
+/* -------------------- Troupes en cours de formation ------------------------*/
+/* ------------ Endpoint : /api/1.0/formations-troupes/{idJoueur} ----------- */
+/* ------------------------------ Method : GET ------------------------------ */
+/* ------------------------- Auteur : Julien Gabriel ------------------------ */
+
 $app->get('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args) {
     try {
         //global $__player_id;
@@ -39,7 +44,9 @@ $app->get('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args)
         return $resp->withStatus(500);   // Internal Server Error
     }
 });
+/* -------------------------------------------------------------------------- */
 
+/* --------------------- Liste des troupes en formation --------------------- */
 function getFormation($id)
 {
     // try..catch.. is already done in caller function
@@ -61,7 +68,10 @@ function getFormation($id)
         ];
     }
 }
+/* -------------------------------------------------------------------------- */
 
+
+/* --------------------- Temps de formation d'une troupe -------------------- */
 function getTempsFormation($idTroupeJoueur)
 {
     $pdo = getPDO();
@@ -74,7 +84,11 @@ function getTempsFormation($idTroupeJoueur)
         return $row->tempsFormation;
     }
 }
+/* -------------------------------------------------------------------------- */
 
+
+
+/* ------------- Vérification si la troupe est déjà dans le deck ------------ */
 function checkTroupeDeck($idJoueur, $idTroupe)
 {
     $pdo = getPDO();
@@ -87,7 +101,9 @@ function checkTroupeDeck($idJoueur, $idTroupe)
         return $row->idTroupeJoueur;
     }
 }
+/* -------------------------------------------------------------------------- */
 
+/* ------------ Obtenir le poids actuel du deck pour le joueur -------------- */
 function getPoidsDeck($idJoueur, $idDeck)
 {
     $pdo = getPDO();
@@ -100,7 +116,9 @@ function getPoidsDeck($idJoueur, $idDeck)
         return $row->result;
     }
 }
+/* -------------------------------------------------------------------------- */
 
+/* ----------------- Poids maximum d'un deck pour le joueur ----------------- */
 function getMaxPoidsDeck($idJoueur)
 {
     $pdo = getPDO();
@@ -113,7 +131,9 @@ function getMaxPoidsDeck($idJoueur)
         return $row->limiteDeck;
     }
 }
+/* -------------------------------------------------------------------------- */
 
+/* ------------------------ Poids d'une troupe donnée ----------------------- */
 function getPoidsUnite($idTroupeJoueur)
 {
     $pdo = getPDO();
@@ -126,7 +146,12 @@ function getPoidsUnite($idTroupeJoueur)
         return $row->poids;
     }
 }
+/* -------------------------------------------------------------------------- */
 
+/* ----------------------- Formation d'une troupe --------------------------- */
+/* ------------ Endpoint : /api/1.0/formations-troupes/{idJoueur} ----------- */
+/* ------------------------------ Method : POST ----------------------------- */
+/* ------------------------- Auteur : Julien Gabriel ------------------------ */
 $app->post('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args) {
     //global $__player_id;
 
@@ -215,3 +240,4 @@ $app->post('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args
         return $resp->withStatus(500);   // Internal Server Error
     }
 });
+/* -------------------------------------------------------------------------- */
