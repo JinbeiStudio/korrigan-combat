@@ -2,29 +2,10 @@
 
 namespace listeTroupes;
 
-function getResource($id)
-{
-   // try..catch.. is already done in caller function
-   // Security check is done in caller function
-   $pdo = getPDO();
-   $stmt = $pdo->prepare('SELECT `idTroupe`, `nomTroupe`, `niveauDebloquage`, `poids`, `tempsFormation`, `capaciteTransport`, `portee`, `vitesse` FROM `listeTroupe` WHERE `idTroupe` = :idTroupe');
-   $stmt->execute(['idTroupe' => $id]);
-
-   if (!($row = $stmt->fetchObject())) {
-      return FALSE;
-   } else {
-      return [
-         'idTroupe' => $row->idTroupe,
-         'nomTroupe' => $row->nomTroupe,
-         'niveauDebloquage' => $row->niveauDebloquage,
-         'poids' => $row->poids,
-         'tempsFormation' => $row->tempsFormation,
-         'capaciteTransport' => $row->capaciteTransport,
-         'portee' => $row->portee,
-         'vitesse' => $row->vitesse,
-      ];
-   }
-}
+/* ------------------------ Liste des troupes du jeu ------------------------ */
+/* ----------------------- Endpoint : /api/1.0/troupe ----------------------- */
+/* ------------------------------ Method : GET ------------------------------ */
+/* ------------------------- Auteur : Julien Gabriel ------------------------ */
 
 $app->get('/api/1.0/troupe', function ($req, $resp, $args) {
    try {
@@ -62,7 +43,38 @@ $app->get('/api/1.0/troupe', function ($req, $resp, $args) {
       return $resp->withStatus(500);   // Internal Server Error
    }
 });
+/* -------------------------------------------------------------------------- */
 
+/* --------------------- Get liste troupes après un post -------------------- */
+function getResource($id)
+{
+   // try..catch.. is already done in caller function
+   // Security check is done in caller function
+   $pdo = getPDO();
+   $stmt = $pdo->prepare('SELECT `idTroupe`, `nomTroupe`, `niveauDebloquage`, `poids`, `tempsFormation`, `capaciteTransport`, `portee`, `vitesse` FROM `listeTroupe` WHERE `idTroupe` = :idTroupe');
+   $stmt->execute(['idTroupe' => $id]);
+
+   if (!($row = $stmt->fetchObject())) {
+      return FALSE;
+   } else {
+      return [
+         'idTroupe' => $row->idTroupe,
+         'nomTroupe' => $row->nomTroupe,
+         'niveauDebloquage' => $row->niveauDebloquage,
+         'poids' => $row->poids,
+         'tempsFormation' => $row->tempsFormation,
+         'capaciteTransport' => $row->capaciteTransport,
+         'portee' => $row->portee,
+         'vitesse' => $row->vitesse,
+      ];
+   }
+}
+/* -------------------------------------------------------------------------- */
+
+/* ------------------------ Liste des troupes du jeu ------------------------ */
+/* ----------------------- Endpoint : /api/1.0/troupe ----------------------- */
+/* ------------------------------ Method : POST ----------------------------- */
+/* ------------------------- Auteur : Julien Gabriel ------------------------ */
 $app->post('/api/1.0/troupe', function ($req, $resp, $args) {
    //global $__player_id;
 
@@ -139,3 +151,4 @@ $app->post('/api/1.0/troupe', function ($req, $resp, $args) {
       return $resp->withStatus(500);   // Internal Server Error
    }
 });
+/* -------------------------------------------------------------------------- */
