@@ -2,8 +2,15 @@
     box-sizing: border-box;
     width: 25em;
     height: 100vh;
-    border: 1px solid lightgray;
+    background-color: rgba(165, 165, 165, 0.527);
     position: relative;
+}
+
+.background {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    filter: blur(4px);
 }
 
 /*.Background{
