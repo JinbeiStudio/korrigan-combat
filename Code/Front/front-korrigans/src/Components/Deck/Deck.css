@@ -1,0 +1,20 @@
+.deck {
+    height: 100%;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+}
+
+.bg-top {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+}
+
+.bg-bottom {
+    position: absolute;
+    bottom: -1.5em;
+    width: 100%;
+    z-index: 2;
+}

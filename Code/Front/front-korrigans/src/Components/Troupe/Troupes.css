@@ -8,7 +8,7 @@
 .titre-troupes p {
     width: 95%;
     margin: 0;
-    margin-bottom: 0.3em;
+    margin-bottom: 0.1em;
     font-size: 0.9em;
     color: white;
     background-color: rgba(255, 255, 255, 0.274);
@@ -20,7 +20,7 @@
 }
 
 .troupes-disponibles {
-    padding: 1em 0;
+    padding: 0.5em 0;
     display: flex;
     flex-direction: column;
     background: rgb(2,0,36);
@@ -33,5 +33,5 @@
 }
 
 .troupes > div:not(.popup):not(.popup-inner) {
-    margin: 0.5em 0 0 0.5em;
+    margin: 0.4em 0 0 0.5em;
 }
