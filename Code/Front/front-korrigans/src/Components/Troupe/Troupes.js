@@ -1,32 +1,59 @@
 import './Troupes.css';
 import TroupeList from './TroupesList';
+import { useEffect, useState } from 'react';
 
 const Troupes = () => {
 
-  let header = new Headers();
-  header.append('Access-Control-Allow-Credentials', 'true');
-  header.append('Content-type', 'application/json');
+    function getCookie(key) {
+        const regexp = new RegExp(`.*${key}=([^;]*)`);
+        const result = regexp.exec(document.cookie);
+        if(result) {
+          return result [1];
+        }
+    }
 
-  fetch("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0", {
-      credentials: 'same-origin'
-  })
-      .then(res => {  
-        var oReq = new XMLHttpRequest();
-        oReq.open("get", "https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/joueur/1", true);
-        oReq.withCredentials = true;
-        oReq.send();
+    const [connexion, setConnexion] = useState(localStorage.getItem('connexion') ?? false);
 
-          fetch("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/troupes", {
-              credentials: 'same-origin',
-              headers: header
+    useEffect(() => {
+      if(!connexion) {
+        fetch("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0", {
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Cache': 'no-cache'
+          }
+        }).then( res => {
+          if(getCookie('kortok')) {
+            console.log(getCookie('kortok'));
+            localStorage.setItem('connexion', true);
+            setConnexion(true);
+          } else {
+            console.log("pas de cookie");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      } else {
+        console.log(connexion);
+      }
+    }, []);
+
+    if(connexion) {
+      fetch("https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/troupe", {
+          credentials: 'same-origin'
+      })
+          .then(res => {
+            return res.json();
           })
-              .then(res => {
-                  return res.json();
-              })
-              .then(result => {
-                      console.log(result);
-              });
-      });
+          .then(result => {
+            console.log(result);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
 
     // Troupes du joueur 1
     const troupes = {"troupesJoueur1":
