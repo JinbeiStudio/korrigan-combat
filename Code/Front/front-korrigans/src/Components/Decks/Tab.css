@@ -3,6 +3,7 @@
     width: 50%;
     height: 3.5em;
     z-index: 9;
+    top: -0.3em;
     list-style: none;
 }
 

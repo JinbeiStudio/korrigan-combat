@@ -61,7 +61,7 @@ const TroupesList = ({ troupesJoueur }) => {
         let nbIconsVides = maxTroupeDeck - troupesJoueur.length;
         let iterator = 0;
         
-        while(iterator < 6) {
+        while(iterator < nbIconsVides) {
             // pour avoir une clé aléatoire
             tabIconsVides.push(Math.random() * 20);
             iterator++;
@@ -69,7 +69,7 @@ const TroupesList = ({ troupesJoueur }) => {
     }
 
     getIconsVides();
-    console.log(tabIconsVides);
+
     const index = 9652;
     return [
         <Popup key={index} 

@@ -1,8 +1,9 @@
 import './IconVide.css';
 
-const IconVide = () => {
+const IconVide = ({ opacity }) => {
+
     return (
-        <div className="icon-vide">
+        <div className="icon-vide" style={{ opacity: opacity }} >
 
         </div>
     )
