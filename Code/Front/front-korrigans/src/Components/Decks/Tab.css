@@ -5,6 +5,7 @@
     z-index: 9;
     top: -0.3em;
     list-style: none;
+    cursor: pointer;
 }
 
 .tab-item p {

@@ -5,7 +5,7 @@ import Popup from './Popup';
 import IconVide from './IconVide';
 
 
-const TroupesList = ({ troupesJoueur }) => {
+const TroupesList = ({ troupesJoueur, handleClickTraining }) => {
 
     const maxTroupeDeck = 8;
     const [popupState, setPopupState] = useState(false);
@@ -80,12 +80,12 @@ const TroupesList = ({ troupesJoueur }) => {
                onPopupClick={togglePopup} 
                infos={popupTroupeState} 
                stats={statistiquesState} 
+               handleClickTraining={handleClickTraining}
         />,
         troupesJoueur.map(data => {
             return <IconTroupe onTroupeClick={togglePopup} key={data.idTroupeJoueur} level={data.niveauTroupe} troupe={data.idTroupe} />
         }),
         tabIconsVides.map(data => {
-            console.log(data);
             return <IconVide key={data} />
         })
     ];

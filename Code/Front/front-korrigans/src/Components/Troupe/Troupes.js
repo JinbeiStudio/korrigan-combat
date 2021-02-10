@@ -2,7 +2,7 @@ import './Troupes.css';
 import TroupeList from './TroupesList';
 import { useEffect, useState } from 'react';
 
-const Troupes = () => {
+const Troupes = ({ handleClickTraining }) => {
 
     const [troupeJoueur, setTroupeJoueur] = useState([]);
 
@@ -40,14 +40,14 @@ const Troupes = () => {
 
       fetchTroupeJoueur();    
     }, []);
-    console.log(troupeJoueur);
+
     return (
         <div className="troupes-disponibles">
             <div className="titre-troupes">
                 <p>Troupes débloquées</p>
             </div>
             <div className="troupes">
-                <TroupeList troupesJoueur={troupeJoueur}/>
+                <TroupeList handleClickTraining={handleClickTraining} troupesJoueur={troupeJoueur}/>
             </div>
         </div>
     );

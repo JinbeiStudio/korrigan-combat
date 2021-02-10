@@ -10,8 +10,20 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { useState } from 'react';
 
 function App() {
+
+  const [troupeToAdd, setTroupeToAdd] = useState([]);
+
+  const handleClickTraining = (event, troupe, nbTroupes) => {
+      let dataTroupe = troupe;
+      dataTroupe.nbTroupes = nbTroupes;
+
+      setTroupeToAdd(dataTroupe);
+      event.preventDefault();
+  }
+
   return (
     <Router>
     <>
@@ -21,13 +33,13 @@ function App() {
             <Navbar />
             <Switch>
               <Route path="/">
-                <Deck />
-                <Troupes />
+                <Deck troupeToAdd={troupeToAdd} />
+                <Troupes handleClickTraining={handleClickTraining} />
               </Route>
               <Route path="/Opponents">
                 <Opponents />
               </Route>
-            </Switch> 
+            </Switch>
             <NavFooter />
       </div>
     </>

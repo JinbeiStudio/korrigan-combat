@@ -1,8 +1,8 @@
 import './Deck.css';
 import Tabs from './Tabs';
 
-const Deck = () => {
-
+const Deck = ({ troupeToAdd }) => {
+    console.log(troupeToAdd);
     const background_top = "/images/deck/background-top.png";
     const background_bottom = "/images/deck/background-bottom.png";
 

@@ -1,10 +1,11 @@
 import './Tab.css';
 
-const Tab = ({ title, active }) => {
-    
+const Tab = ({ title, active, handleClickTab }) => {
+
     const onglet = "/images/deck/bouton-deck.png";
     return (
-        <li className="tab-item"
+        <li onClick={(event) => handleClickTab(event, title)}
+            className="tab-item"
             style={{
                 filter: active ? 'brightness(1)' : 'brightness(0.5)',
             }}>
