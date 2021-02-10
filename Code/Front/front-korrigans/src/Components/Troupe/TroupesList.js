@@ -1,24 +1,39 @@
 import './TroupesList.css';
 import IconTroupe from './IconTroupe';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Popup from './Popup';
+import IconVide from './IconVide';
 
 
-const TroupesList = ({ troupes }) => {
-    const all_troupes = {"listeTroupes":
-                        [{"idTroupe":"1",
-                          "nomTroupe":"Soldat",
-                          "niveauDebloquage":"1",
-                          "poids":"1",
-                          "tempsFormation":"0.25",
-                          "capaciteTransport":"1",
-                          "portee":"1",
-                          "vitesse":"1"},{"idTroupe":"2","nomTroupe":"Archer","niveauDebloquage":"1","poids":"2","tempsFormation":"0.5","capaciteTransport":"1","portee":"2","vitesse":"1"},{"idTroupe":"3","nomTroupe":"Lancier","niveauDebloquage":"1","poids":"2","tempsFormation":"0.5","capaciteTransport":"1","portee":"2","vitesse":"1"},{"idTroupe":"4","nomTroupe":"Aigle","niveauDebloquage":"1","poids":"3","tempsFormation":"3","capaciteTransport":"1","portee":"2","vitesse":"3"},{"idTroupe":"5","nomTroupe":"Ours","niveauDebloquage":"1","poids":"4","tempsFormation":"3","capaciteTransport":"1","portee":"1","vitesse":"1"},{"idTroupe":"6","nomTroupe":"Araign\u00e9e","niveauDebloquage":"1","poids":"4","tempsFormation":"10","capaciteTransport":"1","portee":"2","vitesse":"2"},{"idTroupe":"7","nomTroupe":"Dragon","niveauDebloquage":"1","poids":"5","tempsFormation":"13","capaciteTransport":"1","portee":"3","vitesse":"1"},{"idTroupe":"8","nomTroupe":"Lanceur de Foudre","niveauDebloquage":"1","poids":"3","tempsFormation":"15","capaciteTransport":"1","portee":"3","vitesse":"1"}]};
+const TroupesList = ({ troupesJoueur }) => {
 
+    const maxTroupeDeck = 8;
     const [popupState, setPopupState] = useState(false);
-    const [popupTroupeState, setpopupTroupeState] = useState(troupes[0]);
-    const [statistiquesState, setStatistiqueState] = useState(all_troupes.listeTroupes[0]);
+    const [caracteristiquesTroupes, setCaracteristiquesTroupes] = useState([])
+    const [popupTroupeState, setpopupTroupeState] = useState([]);
+    const [statistiquesState, setStatistiqueState] = useState([]);
     const [nbTroupe, setNbTroupe] = useState(1);
+
+    useEffect(() => {
+
+        const fetchTroupe = async () => {
+            const getTroupe = await fetch(
+                'https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/troupe', {
+                credentials: 'include'
+            })
+                .then(res => {
+                return res.json();
+                })
+                .then(result => {
+                    setCaracteristiquesTroupes(result.listeTroupes);
+                })
+                .catch((err) => {
+                console.log(err);
+                });
+        }
+
+        fetchTroupe();
+    }, []);
 
     const addTroupe = () => {
         if (nbTroupe < 50) {
@@ -36,12 +51,26 @@ const TroupesList = ({ troupes }) => {
 
     const togglePopup = (event, idTroupe) => {
         setPopupState(!popupState);  
-        setpopupTroupeState(troupes.find(element => element.idTroupe === idTroupe));
+        setpopupTroupeState(troupesJoueur.find(element => element.idTroupe === idTroupe));
         setNbTroupe(1);
-        setStatistiqueState(all_troupes.listeTroupes.find(element => element.idTroupe === idTroupe));
+        setStatistiqueState(caracteristiquesTroupes.find(element => element.idTroupe === idTroupe));
     }
 
-    const index = 0;
+    let tabIconsVides = []
+    const getIconsVides = () => {
+        let nbIconsVides = maxTroupeDeck - troupesJoueur.length;
+        let iterator = 0;
+        
+        while(iterator < 6) {
+            // pour avoir une clé aléatoire
+            tabIconsVides.push(Math.random() * 20);
+            iterator++;
+        }
+    }
+
+    getIconsVides();
+    console.log(tabIconsVides);
+    const index = 9652;
     return [
         <Popup key={index} 
                popupOpen={popupState} 
@@ -52,8 +81,12 @@ const TroupesList = ({ troupes }) => {
                infos={popupTroupeState} 
                stats={statistiquesState} 
         />,
-        troupes.map(data => {
+        troupesJoueur.map(data => {
             return <IconTroupe onTroupeClick={togglePopup} key={data.idTroupeJoueur} level={data.niveauTroupe} troupe={data.idTroupe} />
+        }),
+        tabIconsVides.map(data => {
+            console.log(data);
+            return <IconVide key={data} />
         })
     ];
 }
