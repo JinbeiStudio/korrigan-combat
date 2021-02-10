@@ -174,7 +174,7 @@ $app->get('/api/1.0/combat-tour1/attaquant/{idJoueur}/defenseur/{idDefenseur}', 
             $stmt->execute(["orGagne" => $orGagne, "experienceGagne" => $experienceGagne, "idGagnant" => $idGagnant]);
 
             //Baisse de l'or du perdant
-            $stmt = $pdo->prepare('UPDATE players SET gold = gold - :orGagne WHERE id=:idPerdant');
+            $stmt = $pdo->prepare('UPDATE players SET gold = GREATEST(gold - :orGagne, 0) WHERE id=:idPerdant');
             $stmt->execute(["orGagne" => $orGagne, "idPerdant" => $idPerdant]);
         }
 
