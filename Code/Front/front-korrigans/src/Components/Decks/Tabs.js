@@ -1,78 +1,79 @@
 import IconVide from "../Troupe/IconVide";
+import IconTroupe from '../Troupe/IconTroupe';
 import Tab from "./Tab";
 import './Tabs.css';
 import { useState, useEffect } from 'react';
 
-const Tabs = ({ troupeToAdd, isAdd }) => {
+const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, TabIconsVides }) => {
 
-    const tabTabs = ["Attaque", "Defense"];
-    const [activeTab, setActiveTab] = useState(localStorage.getItem('deck') ?? "Attaque");
-    const [deckJoueur, setDeckJoueur] = useState([]);
+    const [troupeEnFormation, setTroupeEnFormation] = useState(false);
 
+    const disabledClick = (event, idTroupe) => {
+        event.stopPropagation();
+    }
+
+    /**************************************************************** */
+    /*************** Envoi d'une troupe en formation *****************/
+    /**************************************************************** */
     useEffect(() => {
-        let type_deck = 2;
-        if(activeTab === tabTabs[0]) {
-            type_deck = 1;
-        }
+        console.log({troupeToAdd});
 
-        const fetchDeckJoueur = async () => {
-            const getDeckJoueur = await fetch(
-                `https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/deck-joueur/0/type/${type_deck}/numero/0`, {
-                credentials: 'include'
-            })
-                .then(res => {
-                    return res.json();
-                })
-                .then(result => {
-                    console.log(result);
-                    setDeckJoueur(result);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        fetchDeckJoueur();
-        localStorage.setItem('deck', activeTab);
-
-    }, [activeTab]);
-/*
-    useEffect(() => {
-        console.log(troupeToAdd);
         const fetchAjoutTroupeDeck = async () => {
+            var details = {
+                'idTroupeJoueur': Number(troupeToAdd.idTroupeJoueur),
+                'quantite': Number(troupeToAdd.nbTroupes),
+                'idDeck': Number("1")
+            };
+            
+            var formBody = [];
+            for (var property in details) {
+              var encodedKey = encodeURIComponent(property);
+              var encodedValue = encodeURIComponent(details[property]);
+              formBody.push(encodedKey + "=" + encodedValue);
+            }
+            formBody = formBody.join("&");
+            console.log(formBody);
+
             const ajoutTroupeDeck = await fetch(
                 `https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/formation-troupes/${troupeToAdd.idJoueur}`, {
+                method: 'POST',
                 credentials: 'include',
-                body: {
-                    idTroupeJoueur: troupeToAdd.idTroupeJoueur,
-                    quantite: troupeToAdd.nbTroupes,
-                    idDeck: "1"
-                }
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: formBody
             })
+                .then(result => {
+                    console.log(result);
+                    setTroupeEnFormation(true);
+                });
         }
-        if(!isAdd) {   
+        if(!isAdd) {  
+            console.log({troupeToAdd}); 
             fetchAjoutTroupeDeck();
         }
     }, [isAdd]);
-*/
-    let tabIconsVides = []
-    const getIconsVidesDeck = (maxTroupeDeck) => {
-        let nbIconsVides = maxTroupeDeck;
-        let iterator = 0;
-        
-        while(iterator < nbIconsVides) {
-            // pour avoir une clé aléatoire
-            tabIconsVides.push(Math.random() * 20);
-            iterator++;
+
+    /**************************************************************** */
+    /*************** Récuperation des troupes en formation ************/
+    /**************************************************************** */
+    useEffect(() => {
+        const fetchTroupeEnFormation = async () => {
+            const TroupesEnFormation = await fetch(
+                `https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/formation-troupes/${troupeToAdd.idJoueur}`, {
+                credentials: 'include'
+            })
+                .then(result => result.json())
+                .then(data => {
+                    console.log(data);
+                    setTroupeEnFormation(true);
+                });
         }
-    }
 
-    const toggleTab = (event, title) => {
-        event.preventDefault();
-        setActiveTab(title);
-    }
-
-    getIconsVidesDeck(8);
+        if(troupeEnFormation) {
+            fetchTroupeEnFormation();
+        }
+    }, [troupeEnFormation])
 
     return (
         <div className="tabs">
@@ -83,9 +84,13 @@ const Tabs = ({ troupeToAdd, isAdd }) => {
             </div>
 
             <div className="tab-content">
-                {tabIconsVides.map(data => {
+                {deckJoueur.length !== 0 ? deckJoueur.map((data) => {
+                    console.log(data.quantite);
+                    return  <IconTroupe level="1" onTroupeClick={disabledClick} quantite={data.quantite} key={data.idTroupeJoueur} troupe={data.idTroupeJoueur} />
+                }) : ""}
+                {TabIconsVides.length !== 0 ? TabIconsVides.map(data => {
                     return <IconVide opacity="1" key={data} />
-                })}
+                }) : ""}
             </div>
         </div>
     );
