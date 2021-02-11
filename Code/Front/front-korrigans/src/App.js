@@ -15,11 +15,13 @@ import { useState } from 'react';
 function App() {
 
   const [troupeToAdd, setTroupeToAdd] = useState([]);
+  const [isAdd, setIsAdd] = useState(true);
 
   const handleClickTraining = (event, troupe, nbTroupes) => {
       let dataTroupe = troupe;
       dataTroupe.nbTroupes = nbTroupes;
 
+      setIsAdd(false);
       setTroupeToAdd(dataTroupe);
       event.preventDefault();
   }
@@ -33,7 +35,7 @@ function App() {
             <Navbar />
             <Switch>
               <Route path="/">
-                <Deck troupeToAdd={troupeToAdd} />
+                <Deck troupeToAdd={troupeToAdd} isAdd={isAdd} />
                 <Troupes handleClickTraining={handleClickTraining} />
               </Route>
               <Route path="/Opponents">
