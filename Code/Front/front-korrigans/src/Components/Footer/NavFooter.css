@@ -1,0 +1,32 @@
+footer{
+    display: flex;
+}
+
+.nav-bloc{
+    background-color: #183566;
+    width: 100px;
+    border: solid #4969a1 0.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-backpack{
+    width: 105px;
+}
+
+.icon-helmet{
+    width: 60px;
+}
+
+.icon-build{
+    width: 75px;
+}
+
+.icon-attack{
+    width: 85px;
+}
+
+.icon-artifact{
+    width: 90px;
+}

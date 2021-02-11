@@ -1,0 +1,24 @@
+.tabs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.tab {
+    display: flex;
+    overflow: hidden;
+}
+
+.tab-content {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    top: -0.6em;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.tab-content > div {
+    margin-top: 0.4em;
+}

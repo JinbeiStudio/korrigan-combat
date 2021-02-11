@@ -5,7 +5,7 @@ import TrainButton from './TrainButton';
 import StatsTroupe from './StatsTroupe';
 import { useState } from 'react';
 
-const Popup = ({ popupOpen, onPopupClick, infos, stats, addTroupe, nbTroupe, removeTroupe }) => {
+const Popup = ({ popupOpen, onPopupClick, infos, stats, addTroupe, nbTroupe, removeTroupe, handleClickTraining }) => {
 
     const disabledClick = (event, idTroupe) => {
         event.stopPropagation();
@@ -38,7 +38,12 @@ const Popup = ({ popupOpen, onPopupClick, infos, stats, addTroupe, nbTroupe, rem
                 </div>
                 <div className="bottom-popup">
                     <CounterTroupe counter={nbTroupe} stats={stats} add={addTroupe} remove={removeTroupe} />
-                    <TrainButton text="Entrainer" />
+                    <TrainButton 
+                        nbTroupe={nbTroupe} 
+                        onButtonIsClick={onPopupClick} 
+                        handleClickTraining={handleClickTraining} 
+                        text="Entrainer" 
+                        dataTroupe={infos} />
                 </div>
             </div>
         </>)

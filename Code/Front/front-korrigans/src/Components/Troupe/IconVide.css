@@ -1,0 +1,12 @@
+.icon-vide {
+    width: 4.5em;
+    height: 4.5em;
+    background-color: black;
+    z-index: 9;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    opacity: 0.5;
+    --tw-shadow: 0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06);    
+    box-shadow: var(--tw-ring-offset-shadow,0 0 transparent),var(--tw-ring-shadow,0 0 transparent),var(--tw-shadow);
+}
