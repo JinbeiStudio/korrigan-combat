@@ -18,7 +18,7 @@ $app->get('/api/1.0/combats/{idJoueur}', function ($req, $resp, $args) {
         }
         /** END OF SECURITY CHECK */
 
-        $stmt = $pdo->prepare('SELECT `idCombat`, `idAttaquant`, `idDefenseur`, `dateCombat`, `gagnant`, `gold` FROM `combats` WHERE idAttaquant=:idJoueur OR idDefenseur=:idJoueur');
+        $stmt = $pdo->prepare('SELECT `idCombat`, `idAttaquant`, `idDefenseur`, `dateCombat`, `gagnant`, `goldAttaquant`, `goldDefenseur`, `experienceAttaquant`, `experienceDefenseur` FROM `combats` WHERE idAttaquant=:idJoueur OR idDefenseur=:idJoueur');
         $stmt->execute(['idJoueur' => $args['idJoueur']]);
 
         $items = [];
@@ -29,7 +29,10 @@ $app->get('/api/1.0/combats/{idJoueur}', function ($req, $resp, $args) {
                 'idDefenseur' => $row->idDefenseur,
                 'dateCombat' => $row->dateCombat,
                 'gagnant' => $row->gagnant,
-                'gold' => $row->gold,
+                'goldAttaquant' => $row->goldAttaquant,
+                'goldDefenseur' => $row->goldDefenseur,
+                'experienceAttaquant' => $row->experienceAttaquant,
+                'experienceDefenseur' => $row->experienceDefenseur,
             ];
         }
         $ret = array(
