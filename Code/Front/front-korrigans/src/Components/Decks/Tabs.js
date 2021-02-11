@@ -3,11 +3,11 @@ import Tab from "./Tab";
 import './Tabs.css';
 import { useState, useEffect } from 'react';
 
-const Tabs = () => {
+const Tabs = ({ troupeToAdd, isAdd }) => {
 
     const tabTabs = ["Attaque", "Defense"];
     const [activeTab, setActiveTab] = useState(localStorage.getItem('deck') ?? "Attaque");
-    const [deckJoueur, setDeckJoueur] = useState([])
+    const [deckJoueur, setDeckJoueur] = useState([]);
 
     useEffect(() => {
         let type_deck = 2;
@@ -31,10 +31,30 @@ const Tabs = () => {
                     console.log(err);
                 });
         }
+
         fetchDeckJoueur();
+        localStorage.setItem('deck', activeTab);
 
-    }, [activeTab])
-
+    }, [activeTab]);
+/*
+    useEffect(() => {
+        console.log(troupeToAdd);
+        const fetchAjoutTroupeDeck = async () => {
+            const ajoutTroupeDeck = await fetch(
+                `https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/formation-troupes/${troupeToAdd.idJoueur}`, {
+                credentials: 'include',
+                body: {
+                    idTroupeJoueur: troupeToAdd.idTroupeJoueur,
+                    quantite: troupeToAdd.nbTroupes,
+                    idDeck: "1"
+                }
+            })
+        }
+        if(!isAdd) {   
+            fetchAjoutTroupeDeck();
+        }
+    }, [isAdd]);
+*/
     let tabIconsVides = []
     const getIconsVidesDeck = (maxTroupeDeck) => {
         let nbIconsVides = maxTroupeDeck;
@@ -51,10 +71,6 @@ const Tabs = () => {
         event.preventDefault();
         setActiveTab(title);
     }
-
-    useEffect(() => {
-        localStorage.setItem('deck', activeTab);
-    }, [activeTab]);
 
     getIconsVidesDeck(8);
 
