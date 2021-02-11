@@ -187,6 +187,7 @@ $app->get('/api/1.0/combat-tour1/attaquant/{idJoueur}/defenseur/{idDefenseur}', 
         $items['resultat'] = $attaquerAttaquant;
         $items['resultat']['orGagne'] = $orAttaquant;
         $items['resultat']['orPerdu'] = $orDefenseur;
+        $items['resultat']['combat'] = $idCombat;
         if ($idGagnant == $idJoueur) {
             $items['resultat']['gagne'] = true;
         } else {
