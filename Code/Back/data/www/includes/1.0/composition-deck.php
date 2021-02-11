@@ -25,7 +25,8 @@ $app->get('/api/1.0/deck-joueur/{idJoueur}/type/{type}/numero/{numero}', functio
         while ($row = $stmt->fetchObject()) {
             $items[] = [
                 'idTroupeJoueur' => $row->idTroupeJoueur,
-                'quantite' => $row->quantite
+                'quantite' => $row->quantite,
+                'idTroupe' => $row->idTroupe
             ];
         }
         $ret = array(
