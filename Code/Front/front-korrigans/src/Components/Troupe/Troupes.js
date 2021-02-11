@@ -16,7 +16,6 @@ const Troupes = ({ handleClickTraining }) => {
           })
               .then( res => {
                 localStorage.setItem('connexion', true);
-                console.log("connecté !");
               })
               .catch((err) => {
                 console.log(err);
