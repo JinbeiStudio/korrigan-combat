@@ -1,6 +1,7 @@
 import './TroupesList.css';
 import IconTroupe from './IconTroupe';
-import { useState, useEffect } from 'react';
+import { TroupeAjoutee } from '../../App';
+import { useState, useEffect, useContext } from 'react';
 import Popup from './Popup';
 import IconVide from './IconVide';
 
@@ -13,8 +14,12 @@ const TroupesList = ({ troupesJoueur, handleClickTraining }) => {
     const [popupTroupeState, setpopupTroupeState] = useState([]);
     const [statistiquesState, setStatistiqueState] = useState([]);
     const [nbTroupe, setNbTroupe] = useState(1);
+    const context = useContext(TroupeAjoutee);
+
+    const { connexion } = context;
 
     useEffect(() => {
+        let isSubscribed = true;
 
         const fetchTroupe = async () => {
             const getTroupe = await fetch(
@@ -25,7 +30,9 @@ const TroupesList = ({ troupesJoueur, handleClickTraining }) => {
                 return res.json();
                 })
                 .then(result => {
-                    setCaracteristiquesTroupes(result.listeTroupes);
+                    if(isSubscribed) {
+                        setCaracteristiquesTroupes(result.listeTroupes);
+                    }    
                 })
                 .catch((err) => {
                 console.log(err);
@@ -33,7 +40,8 @@ const TroupesList = ({ troupesJoueur, handleClickTraining }) => {
         }
 
         fetchTroupe();
-    }, []);
+        return () => (isSubscribed = false);
+    }, [connexion]);
 
     const addTroupe = () => {
         if (nbTroupe < 50) {

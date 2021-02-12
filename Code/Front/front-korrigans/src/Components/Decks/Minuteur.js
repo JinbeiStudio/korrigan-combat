@@ -11,7 +11,6 @@ const Minuteur = ({ time }) => {
 
     const [timer, setTimer] = useState(time);
     const { TroupeIsOk, setTroupeIsOk, setTroupeEnFormation, IconFormationEnCours, setIconFormationEnCours } = context;
-    //setTroupeEnFormation(true);
 
     if(time) {
         let total = time*1000;

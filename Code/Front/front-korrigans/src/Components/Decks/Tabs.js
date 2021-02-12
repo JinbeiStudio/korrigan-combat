@@ -4,11 +4,14 @@ import Tab from "./Tab";
 import './Tabs.css';
 import { useState, useEffect, useContext } from 'react';
 import { FormationContext } from './Deck';
+import { TroupeAjoutee } from '../../App';
 
-const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, TabIconsVides }) => {
+const Tabs = ({ deckJoueur, toggleTab, activeTab, tabTabs, TabIconsVides }) => {
 
     const [TabFormationEnCours, setTabFormationEnCours] = useState([]);
     const context = useContext(FormationContext);
+    const contextTroupeAjoutee = useContext(TroupeAjoutee);
+    const { setIsAdd, troupeToAdd, isAdd } = contextTroupeAjoutee;
 
     const {troupeEnFormation, setTroupeEnFormation, IconFormationEnCours, setIconFormationEnCours} = context;
 
@@ -20,6 +23,7 @@ const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, T
     /*************** Envoi d'une troupe en formation *****************/
     /**************************************************************** */
     useEffect(() => {
+        let isSubscribed = true;
         let type_deck = 2;
         if(activeTab === tabTabs[0]) {
             type_deck = 1;
@@ -50,18 +54,25 @@ const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, T
                 body: formBody
             })
                 .then(result => {
-                    setTroupeEnFormation(true);
+                    if(isSubscribed) {
+                        setTroupeEnFormation(true);
+                    }
                 });
         }
+        console.log({isAdd});
         if(!isAdd) {  
             fetchAjoutTroupeDeck();
+            setIsAdd(true);
         }
-    }, [isAdd]);
+        return () => (isSubscribed = false);
+    }, [troupeToAdd]);
 
     /**************************************************************** */
     /*************** Récuperation des troupes en formation ************/
     /**************************************************************** */
     useEffect(() => {
+        let isSubscribed = true;
+
         const fetchTroupeEnFormation = async () => {
             const TroupesEnFormation = await fetch(
                 `https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/formation-troupes/${troupeToAdd.idJoueur}`, {
@@ -69,14 +80,19 @@ const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, T
             })
                 .then(result => result.json())
                 .then(data => {
-                    setTroupeEnFormation(true);
-                    setTabFormationEnCours(data.formationTroupes);
+                    if(isSubscribed) {
+                        console.log(data);
+                        setTabFormationEnCours(data.formationTroupes);
+                    }
                 });
         }
 
         if(troupeEnFormation) {
             fetchTroupeEnFormation();
+        } else {
+            setTabFormationEnCours([]);
         }
+        return () => (isSubscribed = false);
     }, [troupeEnFormation]);
 
 
@@ -93,13 +109,13 @@ const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, T
                 return data;
             }));
         }
-    }, [TabFormationEnCours]);
+    }, [TabFormationEnCours, activeTab]);
 
     return (
         <div className="tabs">
             <div className="tab">
                 {tabTabs.map(data => {
-                    return <Tab key={data} handleClickTab={toggleTab} title={data} active={ data === activeTab ? true : false } />
+                    return <Tab key={data} handleClickTab={toggleTab} formationEnCours={troupeEnFormation} title={data} active={ data === activeTab ? true : false } />
                 })}
             </div>
 

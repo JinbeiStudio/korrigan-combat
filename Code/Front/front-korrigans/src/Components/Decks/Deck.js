@@ -1,14 +1,18 @@
 import './Deck.css';
 import Tabs from './Tabs';
-import { useEffect, useState, createContext } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
+import { TroupeAjoutee } from '../../App';
 import Minuteur from './Minuteur';
 
-const Deck = ({ troupeToAdd, isAdd }) => {
+const Deck = () => {
 
     const maxTroupeDeck = 8;
     const background_top = "/images/deck/background-top.png";
     const background_bottom = "/images/deck/background-bottom.png";
     const tabTabs = ["Attaque", "Defense"];
+
+    const context = useContext(TroupeAjoutee);
+    const { connexion } = context;
 
     const [activeTab, setActiveTab] = useState(localStorage.getItem('deck') ?? "Attaque");
     const [deckJoueur, setDeckJoueur] = useState([]);
@@ -28,6 +32,7 @@ const Deck = ({ troupeToAdd, isAdd }) => {
     /*************** Récuperation des données du deck *****************/
     /**************************************************************** */
     useEffect(() => {
+        let isSubscribed = true;
         let type_deck = 2;
         if(activeTab === tabTabs[0]) {
             type_deck = 1;
@@ -42,23 +47,25 @@ const Deck = ({ troupeToAdd, isAdd }) => {
                     return res.json();
                 })
                 .then(result => {
-                    console.log(result);
-                    setDeckJoueur(result[`deck-${type_deck}-0`]);
+                    if(isSubscribed) {
+                        setDeckJoueur(result[`deck-${type_deck}-0`]);
+                        console.log(result);
+                        const getIconsVidesDeck = () => {
+                            let nbIconsVides = maxTroupeDeck - result[`deck-${type_deck}-0`].length;
 
-                    const getIconsVidesDeck = () => {
-                        let nbIconsVides = maxTroupeDeck - result[`deck-${type_deck}-0`].length;
-
-                        let iterator = 0;
-                        
-                        while(iterator < nbIconsVides) {
-                            // pour avoir une clé aléatoire
-                            IconsVides.push(Math.random() * 20);
-                            iterator++;
+                            let iterator = 0;
+                            
+                            while(iterator < nbIconsVides) {
+                                // pour avoir une clé aléatoire
+                                IconsVides.push(Math.random() * 20);
+                                iterator++;
+                            }
+                            console.log(IconsVides);
+                            setTabIconsVides(IconsVides);
                         }
-                        setTabIconsVides(IconsVides);
-                    }
 
-                    getIconsVidesDeck();
+                        getIconsVidesDeck();
+                    }
                 })
                 .catch((err) => {
                     console.log(err);
@@ -67,7 +74,8 @@ const Deck = ({ troupeToAdd, isAdd }) => {
 
         fetchDeckJoueur();
         localStorage.setItem('deck', activeTab);
-    }, [activeTab, TroupeIsOk]);
+        return () => (isSubscribed = false);
+    }, [connexion, activeTab, TroupeIsOk]);
 
     return (
         <FormationContext.Provider value={{ TroupeIsOk, setTroupeIsOk, troupeEnFormation, setTroupeEnFormation, IconFormationEnCours, setIconFormationEnCours }} >
@@ -78,8 +86,6 @@ const Deck = ({ troupeToAdd, isAdd }) => {
                 toggleTab={toggleTab} 
                 activeTab={activeTab} 
                 deckJoueur={deckJoueur} 
-                troupeToAdd={troupeToAdd} 
-                isAdd={isAdd} 
                 tabTabs={tabTabs}
                 TabIconsVides={TabIconsVides} />
             <Minuteur />
