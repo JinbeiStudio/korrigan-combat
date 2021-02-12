@@ -2,11 +2,15 @@ import IconVide from "../Troupe/IconVide";
 import IconTroupe from '../Troupe/IconTroupe';
 import Tab from "./Tab";
 import './Tabs.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { FormationContext } from './Deck';
 
 const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, TabIconsVides }) => {
 
-    const [troupeEnFormation, setTroupeEnFormation] = useState(false);
+    const [TabFormationEnCours, setTabFormationEnCours] = useState([]);
+    const context = useContext(FormationContext);
+
+    const {troupeEnFormation, setTroupeEnFormation, IconFormationEnCours, setIconFormationEnCours} = context;
 
     const disabledClick = (event, idTroupe) => {
         event.stopPropagation();
@@ -16,13 +20,16 @@ const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, T
     /*************** Envoi d'une troupe en formation *****************/
     /**************************************************************** */
     useEffect(() => {
-        console.log({troupeToAdd});
+        let type_deck = 2;
+        if(activeTab === tabTabs[0]) {
+            type_deck = 1;
+        }
 
         const fetchAjoutTroupeDeck = async () => {
             var details = {
                 'idTroupeJoueur': Number(troupeToAdd.idTroupeJoueur),
                 'quantite': Number(troupeToAdd.nbTroupes),
-                'idDeck': Number("1")
+                'idDeck': Number(type_deck)
             };
             
             var formBody = [];
@@ -32,7 +39,6 @@ const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, T
               formBody.push(encodedKey + "=" + encodedValue);
             }
             formBody = formBody.join("&");
-            console.log(formBody);
 
             const ajoutTroupeDeck = await fetch(
                 `https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/formation-troupes/${troupeToAdd.idJoueur}`, {
@@ -44,12 +50,10 @@ const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, T
                 body: formBody
             })
                 .then(result => {
-                    console.log(result);
                     setTroupeEnFormation(true);
                 });
         }
         if(!isAdd) {  
-            console.log({troupeToAdd}); 
             fetchAjoutTroupeDeck();
         }
     }, [isAdd]);
@@ -65,15 +69,31 @@ const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, T
             })
                 .then(result => result.json())
                 .then(data => {
-                    console.log(data);
                     setTroupeEnFormation(true);
+                    setTabFormationEnCours(data.formationTroupes);
                 });
         }
 
         if(troupeEnFormation) {
             fetchTroupeEnFormation();
         }
-    }, [troupeEnFormation])
+    }, [troupeEnFormation]);
+
+
+    useEffect(() => {
+        if(TabFormationEnCours.length > 0) {
+            setIconFormationEnCours(TabFormationEnCours.map(data => {
+                console.log(data);
+                let fin = new Date(data.dateFinFormation);
+                let debut = new Date(data.dateDebutFormation);
+                
+                let time = (fin - debut)/1000;
+                data.time = time;
+                TabIconsVides.shift();
+                return data;
+            }));
+        }
+    }, [TabFormationEnCours]);
 
     return (
         <div className="tabs">
@@ -85,8 +105,10 @@ const Tabs = ({ troupeToAdd, isAdd, deckJoueur, toggleTab, activeTab, tabTabs, T
 
             <div className="tab-content">
                 {deckJoueur.length !== 0 ? deckJoueur.map((data) => {
-                    console.log(data.quantite);
-                    return  <IconTroupe level="1" onTroupeClick={disabledClick} quantite={data.quantite} key={data.idTroupeJoueur} troupe={data.idTroupeJoueur} />
+                    return <IconTroupe level="1" onTroupeClick={disabledClick} quantite={data.quantite} key={data.idTroupeJoueur} troupe={data.idTroupe} />
+                }) : ""}
+                {IconFormationEnCours.length !== 0 ? IconFormationEnCours.map(data => {
+                    return <IconTroupe level="1" onTroupeClick={disabledClick} time={data.time} key={data.idTroupeJoueur} troupe={data.idTroupeJoueur} />
                 }) : ""}
                 {TabIconsVides.length !== 0 ? TabIconsVides.map(data => {
                     return <IconVide opacity="1" key={data} />

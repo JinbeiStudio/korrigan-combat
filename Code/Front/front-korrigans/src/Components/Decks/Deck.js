@@ -1,6 +1,7 @@
 import './Deck.css';
 import Tabs from './Tabs';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext } from 'react';
+import Minuteur from './Minuteur';
 
 const Deck = ({ troupeToAdd, isAdd }) => {
 
@@ -12,11 +13,13 @@ const Deck = ({ troupeToAdd, isAdd }) => {
     const [activeTab, setActiveTab] = useState(localStorage.getItem('deck') ?? "Attaque");
     const [deckJoueur, setDeckJoueur] = useState([]);
     const [TabIconsVides, setTabIconsVides] = useState([]);
+    const [IconFormationEnCours, setIconFormationEnCours] = useState([]);
+    const [troupeEnFormation, setTroupeEnFormation] = useState(false);
+    const [TroupeIsOk, setTroupeIsOk] = useState(false);
 
     const toggleTab = (event, title) => {
         event.preventDefault();
         setActiveTab(title);
-        console.log(title);
     }
     
     let IconsVides = [];
@@ -39,6 +42,7 @@ const Deck = ({ troupeToAdd, isAdd }) => {
                     return res.json();
                 })
                 .then(result => {
+                    console.log(result);
                     setDeckJoueur(result[`deck-${type_deck}-0`]);
 
                     const getIconsVidesDeck = () => {
@@ -63,9 +67,10 @@ const Deck = ({ troupeToAdd, isAdd }) => {
 
         fetchDeckJoueur();
         localStorage.setItem('deck', activeTab);
-    }, [activeTab]);
+    }, [activeTab, TroupeIsOk]);
 
     return (
+        <FormationContext.Provider value={{ TroupeIsOk, setTroupeIsOk, troupeEnFormation, setTroupeEnFormation, IconFormationEnCours, setIconFormationEnCours }} >
         <div className="deck" style={{ background: `url('${process.env.PUBLIC_URL}/images/deck/background-deck.jpg')` }}>
             <img className="bg-top" src={background_top} alt="" />
             <img className="bg-bottom" src={background_bottom} alt="" />
@@ -77,8 +82,11 @@ const Deck = ({ troupeToAdd, isAdd }) => {
                 isAdd={isAdd} 
                 tabTabs={tabTabs}
                 TabIconsVides={TabIconsVides} />
+            <Minuteur />
         </div>
+        </FormationContext.Provider>
     );
 }
 
 export default Deck;
+export const FormationContext = createContext();

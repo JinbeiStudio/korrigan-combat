@@ -10,7 +10,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 
 function App() {
 
@@ -27,26 +27,27 @@ function App() {
   }
 
   return (
-    <Router>
-    <>
-      <div className="background" style={{ background: `url('${process.env.PUBLIC_URL}/images/background.jpg')` }}>
-      </div>
-      <div className="screen">
-            <Navbar />
-            <Switch>
-              <Route path="/">
-                <Deck troupeToAdd={troupeToAdd} isAdd={isAdd} />
-                <Troupes handleClickTraining={handleClickTraining} />
-              </Route>
-              <Route path="/Opponents">
-                <Opponents />
-              </Route>
-            </Switch>
-            <NavFooter />
-      </div>
-    </>
-    </Router>
+    <TroupeAjoutee.Provider value={{setIsAdd}}>
+      <Router>
+        <div className="background" style={{ background: `url('${process.env.PUBLIC_URL}/images/background.jpg')` }}>
+        </div>
+        <div className="screen">
+              <Navbar />
+              <Switch>
+                <Route path="/">
+                  <Deck troupeToAdd={troupeToAdd} isAdd={isAdd} />
+                  <Troupes handleClickTraining={handleClickTraining} />
+                </Route>
+                <Route path="/Opponents">
+                  <Opponents />
+                </Route>
+              </Switch>
+              <NavFooter />
+        </div>
+      </Router>
+    </TroupeAjoutee.Provider>
   );
 }
 
 export default App;
+export const TroupeAjoutee = createContext();
