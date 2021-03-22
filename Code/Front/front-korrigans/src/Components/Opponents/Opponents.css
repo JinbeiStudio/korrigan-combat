@@ -1,0 +1,13 @@
+.bloc-adversaire{
+    background-color:#704621;
+    display: flex;
+    height: 100px;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 5px solid #503116;
+    border-bottom: 5px solid #503116;
+}
+
+.button-adversaire{
+    background-position: left;
+}

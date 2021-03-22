@@ -3,7 +3,8 @@ import './App.css';
 import Navbar from './Components/Navbar/Navbar';
 import NavFooter from './Components/Footer/NavFooter';
 import Deck from './Components/Decks/Deck';
-import Opponents from './Components/Opponents/Opponents'
+import Opponents from './Components/Opponents/Opponents';
+import Accueil from './Components/Accueil/Accueil';
 import {
   BrowserRouter as Router,
   Switch,
