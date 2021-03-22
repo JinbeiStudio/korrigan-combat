@@ -30,9 +30,7 @@ function App() {
   useEffect(() => {
     const getConnexion = async () => {
       const connexion = await fetch(
-        'https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0', {
-          credentials: 'include'
-        })
+        'https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/login?login=korrigans&password=korrigans&ver=1.0')
             .then( res => {
               localStorage.setItem('connexion', true);
               setConnexion(true);
