@@ -55,7 +55,10 @@ function App() {
         <div className="screen">
               <Navbar />
               <Switch>
-                <Route path="/">
+                <Route exact path="/">
+                  <Accueil />
+                </Route>
+                <Route path="/Deck">
                   <Deck />
                   <Troupes handleClickTraining={handleClickTraining} />
                 </Route>
