@@ -34,7 +34,7 @@ const StatsTroupe = ({ stats, nbTroupe}) => {
     const vitesse = "/images/stats/vitesse.png";
 
     const taille = "50";
-
+    
     return (
         <div className="statistiques-troupe">
             <div>

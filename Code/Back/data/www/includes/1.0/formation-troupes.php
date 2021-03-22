@@ -20,7 +20,7 @@ $app->get('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args)
         }
         /** END OF SECURITY CHECK */
 
-        $stmt = $pdo->prepare('SELECT `idFormation`, `idJoueur`, `idTroupeJoueur`, `quantiteFormation`, `dateDebutFormation`, `dateFinFormation`  FROM `formationTroupes` WHERE idJoueur=:idJoueur');
+        $stmt = $pdo->prepare('SELECT `idFormation`, `idJoueur`, `idTroupeJoueur`, `quantiteFormation`, `dateDebutFormation`, `dateFinFormation`, `idDeck`  FROM `formationTroupes` WHERE idJoueur=:idJoueur');
         $stmt->execute(["idJoueur" => $args['idJoueur']]);
 
         $items = [];
@@ -31,7 +31,8 @@ $app->get('/api/1.0/formation-troupes/{idJoueur}', function ($req, $resp, $args)
                 'idTroupeJoueur' => $row->idTroupeJoueur,
                 'quantiteFormation' => $row->quantiteFormation,
                 'dateDebutFormation' => $row->dateDebutFormation,
-                'dateFinFormation' => $row->dateFinFormation
+                'dateFinFormation' => $row->dateFinFormation,
+                'idDeck' => $row->idDeck
             ];
         }
         $ret = array(

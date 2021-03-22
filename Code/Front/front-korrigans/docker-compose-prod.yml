@@ -10,10 +10,16 @@ services:
     volumes:
       - '.:/app'
       - '/app/node_modules'
-    env_file:
-      - .env
+    expose:
+      - 3000
     environment:
       - VIRTUAL_HOST=korrigans-team2.lpweb-lannion.fr
-      - VIRTUAL_PORT=3001
+      - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=korrigans-team2.lpweb-lannion.fr
       - LETSENCRYPT_EMAIL=team2korrigans@gmail.com
+    networks:
+      - webproxy_back
+
+networks:
+  webproxy_back:
+    external: true
