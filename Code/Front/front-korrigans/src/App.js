@@ -3,27 +3,16 @@ import './App.css';
 import Navbar from './Components/Navbar/Navbar';
 import NavFooter from './Components/Footer/NavFooter';
 import Deck from './Components/Decks/Deck';
-import Opponents from './Components/Opponents/Opponents'
+import Opponents from './Components/Opponents/Opponents';
+import Accueil from './Components/Accueil/Accueil';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
-import { useState } from 'react';
 
 function App() {
-
-  const [troupeToAdd, setTroupeToAdd] = useState([]);
-
-  const handleClickTraining = (event, troupe, nbTroupes) => {
-      let dataTroupe = troupe;
-      dataTroupe.nbTroupes = nbTroupes;
-
-      setTroupeToAdd(dataTroupe);
-      event.preventDefault();
-  }
-
   return (
     <Router>
     <>
@@ -32,14 +21,17 @@ function App() {
       <div className="screen">
             <Navbar />
             <Switch>
-              <Route path="/">
-                <Deck troupeToAdd={troupeToAdd} />
-                <Troupes handleClickTraining={handleClickTraining} />
+              <Route exact path="/">
+                <Accueil />
+              </Route>
+              <Route path="/Deck">
+                <Deck />
+                <Troupes />
               </Route>
               <Route path="/Opponents">
                 <Opponents />
               </Route>
-            </Switch>
+            </Switch> 
             <NavFooter />
       </div>
     </>
