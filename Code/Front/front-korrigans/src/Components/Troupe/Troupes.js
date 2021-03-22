@@ -18,7 +18,6 @@ const Troupes = ({ handleClickTraining }) => {
         const getTroupeJoueur = await fetch(
           'https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/troupes-joueur/1', {
             credentials: 'include',
-            mode: 'cors'
           })
               .then(res => {
                 return res.json();
