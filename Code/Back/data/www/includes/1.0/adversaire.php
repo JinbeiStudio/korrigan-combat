@@ -33,7 +33,7 @@ $app->get('/api/1.0/adversaire/{id}', function ($req, $resp, $args) {
          return $resp->withStatus(401);   // Unauthorized
       }
       /** END OF SECURITY CHECK */
-      $stmt = $pdo->prepare('SELECT `id`,`level`,`login` FROM `players` WHERE `level` = :level AND `id` != :id ORDER BY rand() LIMIT 5' ); 
+      $stmt = $pdo->prepare('SELECT `id`,`level`,`login` FROM `players` WHERE `level` = :level AND `id` != :id  AND   ORDER BY rand() LIMIT 5' ); 
       $stmt->execute(['level'=>$niveauJoueur, 'id'=>$id],);
         
       $items = [];

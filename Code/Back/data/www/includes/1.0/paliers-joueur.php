@@ -1,5 +1,5 @@
 <?php
-namespace caserne; 
+namespace palierJoueur; 
 
 $app->get('/api/1.0/paliers-joueur', function ($req, $resp, $args) {
    //global $__player_id;
