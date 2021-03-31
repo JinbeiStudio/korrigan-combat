@@ -3,6 +3,7 @@
 namespace adversaire;
 
 /* ----------------------- Obtenir le niveau du joueur ---------------------- */
+
 function getInfoJoueur($id)
 {
    global $__player_id;
@@ -25,7 +26,7 @@ function getInfoJoueur($id)
 /* -------------------- 5 adversaires pour un joueur ------------------------ */
 /* ------------------ Endpoint : /api/1.0/adversaire/{idJoueur} ------------- */
 /* ------------------------------ Method : GET ------------------------------ */
-/* ------------------------- Auteur : Maxime Sidoit ------------------------- */
+/* --------- Auteur : Maxime Sidoit & Julien Gabriel ------------------------ */
 $app->get('/api/1.0/adversaire/{id}', function ($req, $resp, $args) {
    global $__player_id;
 
@@ -40,7 +41,7 @@ $app->get('/api/1.0/adversaire/{id}', function ($req, $resp, $args) {
          return $resp->withStatus(401);   // Unauthorized
       }
       /** END OF SECURITY CHECK */
-      $stmt = $pdo->prepare('SELECT `id`,`level`,`login` FROM `players` WHERE `level` = :level AND `id` != :id ORDER BY rand() LIMIT 5');
+      $stmt = $pdo->prepare('SELECT `id`,`level`,`login` FROM `players` INNER JOIN `deck` ON players.id=deck.idJoueur INNER JOIN compositionDeck ON deck.idDeck=compositionDeck.idDeck WHERE `level` = :level AND `id` != :id AND deck.type=2 AND compositionDeck.quantite!=0 GROUP BY id ORDER BY rand() LIMIT 5');
       $stmt->execute(['level' => $niveauJoueur, 'id' => $id],);
 
       $items = [];
@@ -51,6 +52,7 @@ $app->get('/api/1.0/adversaire/{id}', function ($req, $resp, $args) {
             'level' => $row->level,
          ];
       }
+
       $ret = array(
          'adversaire' => (array) $items,
       );
