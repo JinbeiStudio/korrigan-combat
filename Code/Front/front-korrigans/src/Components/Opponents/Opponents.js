@@ -9,11 +9,13 @@ const Opponents = ()=>{
     const [buttonPopup, setButtonPopup] = useState(false);
     const [loading, setLoading] = useState(true);
     const [adversaire, setAdversaire] = useState([]);
+    const [id_adversaire, setIdAdversaire] = useState(0);
+
     useEffect(() => {
         const fetchAdversaire = async () => {
         
             const getAdversaire = await fetch(
-              'https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/adversaire/5 ', {
+              'https://korrigans-team2-ws.lpweb-lannion.fr/api/1.0/adversaire/1 ', {
                 credentials: 'include',
               })
                   .then(res => {
@@ -34,10 +36,10 @@ const Opponents = ()=>{
                     <div className="bloc-adversaire">
                         <p>{i.login}</p>
                         <p>Niveau : {i.level}</p>
-                        <button onClick={()=> setButtonPopup(true)} className="button-adversaire" style={{ background: `url('${process.env.PUBLIC_URL}/images/adversaires/glob_small-button2..png')` }}>Affronter</button>
+                        <button onClick={()=> {setButtonPopup(true); setIdAdversaire(i.id);}} className="button-adversaire" style={{ background: `url('${process.env.PUBLIC_URL}/images/adversaires/glob_small-button2..png')` }}>Affronter</button>
                     </div>
                 ))}
-                <Popup trigger={buttonPopup} setTrigger={setButtonPopup} />
+                <Popup trigger={buttonPopup} setTrigger={setButtonPopup} id_adversaire={id_adversaire} />
             </div>
             
         );
