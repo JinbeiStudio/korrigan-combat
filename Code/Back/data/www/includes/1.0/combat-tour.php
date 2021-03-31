@@ -8,6 +8,7 @@ DEFINE("DECK_ACTIF", 0);
 DEFINE("DECK_ATTAQUE", 1);
 DEFINE("DECK_DEFENSE", 2);
 DEFINE("OR_GAGNE", 10);
+DEFINE("RESSOURCE_GAGNE", 5);
 DEFINE("EXPERIENCE_GAGNE", 5);
 
 use DateTime;
@@ -82,6 +83,13 @@ $app->get('/api/1.0/combat-tour1/attaquant/{idJoueur}/defenseur/{idDefenseur}', 
     $experienceAttaquant = experienceGagne($attaquerDefenseur);
     $experienceDefenseur = experienceGagne($attaquerAttaquant);
 
+    //Ressources éventuellements volées pour chaque joueur
+    $volRessourceAttaquant = volRessource($attaquerAttaquant);
+    $volRessourceDefenseur = volRessource($attaquerDefenseur);
+    $idRessourceAttaquant = array_key_first($volRessourceAttaquant);
+    $ressourceAttaquant = $volRessourceAttaquant[$idRessourceAttaquant];
+    $idRessourceDefenseur = array_key_first($volRessourceDefenseur);
+    $ressourceDefenseur = $volRessourceDefenseur[$idRessourceDefenseur];
 
     //Détermine si il y a un gagnant au premier tour
     if ($attaquerAttaquant['perdu'] === true || $attaquerAttaquant['perdu'] === true && $attaquerDefenseur['perdu'] === true) {
@@ -89,11 +97,15 @@ $app->get('/api/1.0/combat-tour1/attaquant/{idJoueur}/defenseur/{idDefenseur}', 
         $idPerdant = $idJoueur;
         $orGagne = $orDefenseur;
         $experienceGagne = $experienceDefenseur;
+        $idRessourceGagne = $idRessourceDefenseur;
+        $ressourceGagne = $ressourceDefenseur;
     } elseif ($attaquerAttaquant['perdu'] === false && $attaquerDefenseur['perdu'] === true) {
         $idGagnant = $idJoueur;
         $idPerdant = $idDefenseur;
         $orGagne = $orAttaquant;
         $experienceGagne = $experienceAttaquant;
+        $idRessourceGagne = $idRessourceAttaquant;
+        $ressourceGagne = $ressourceAttaquant;
     } elseif ($attaquerAttaquant['perdu'] === false && $attaquerDefenseur['perdu'] === false) {
         $idGagnant = NULL;
     }
@@ -116,8 +128,8 @@ $app->get('/api/1.0/combat-tour1/attaquant/{idJoueur}/defenseur/{idDefenseur}', 
 
         /* ----------------- Ajout d'un nouveau combat dans la table ---------------- */
         $date = new DateTime('now');
-        $stmt = $pdo->prepare('INSERT INTO combats (idAttaquant, idDefenseur, dateCombat, gagnant, goldAttaquant, goldDefenseur, experienceAttaquant, experienceDefenseur)  VALUES (:idAttaquant, :idDefenseur, :dateCombat, :gagnant, :orAttaquant, :orDefenseur, :experienceAttaquant, :experienceDefenseur)');
-        $stmt->execute(["idAttaquant" => $idJoueur, "idDefenseur" => $idDefenseur, "dateCombat" => $date->format("Y-m-d H:i:s"), "orAttaquant" => $orAttaquant, "orDefenseur" => $orDefenseur, "gagnant" => $idGagnant, "experienceAttaquant" => $experienceAttaquant, "experienceDefenseur" => $experienceDefenseur]);
+        $stmt = $pdo->prepare('INSERT INTO combats (idAttaquant, idDefenseur, dateCombat, gagnant, goldAttaquant, goldDefenseur, experienceAttaquant, experienceDefenseur, idRessourceAttaquant, ressourceAttaquant, idRessourceDefenseur, ressourceDefenseur)  VALUES (:idAttaquant, :idDefenseur, :dateCombat, :gagnant, :orAttaquant, :orDefenseur, :experienceAttaquant, :experienceDefenseur, :idRessourceAttaquant, :ressourceAttaquant, :idRessourceDefenseur, :ressourceDefenseur)');
+        $stmt->execute(["idAttaquant" => $idJoueur, "idDefenseur" => $idDefenseur, "dateCombat" => $date->format("Y-m-d H:i:s"), "orAttaquant" => $orAttaquant, "orDefenseur" => $orDefenseur, "gagnant" => $idGagnant, "experienceAttaquant" => $experienceAttaquant, "experienceDefenseur" => $experienceDefenseur, "idRessourceAttaquant" => $idRessourceAttaquant, "ressourceAttaquant" => $ressourceAttaquant, "idRessourceDefenseur" => $idRessourceDefenseur, "ressourceDefenseur" => $ressourceDefenseur]);
         $idCombat = $pdo->lastInsertId();
         /* -------------------------------------------------------------------------- */
 
@@ -176,6 +188,14 @@ $app->get('/api/1.0/combat-tour1/attaquant/{idJoueur}/defenseur/{idDefenseur}', 
             //Baisse de l'or du perdant
             $stmt = $pdo->prepare('UPDATE players SET gold = GREATEST(gold - :orGagne, 0) WHERE id=:idPerdant');
             $stmt->execute(["orGagne" => $orGagne, "idPerdant" => $idPerdant]);
+
+            //Ajout de la ressource au gagnant
+            $stmt = $pdo->prepare('UPDATE players_resources SET quantity = quantity + :ressourceGagne WHERE player_id=:idGagnant AND resource_id=:idRessourceGagne');
+            $stmt->execute(["ressourceGagne" => $ressourceGagne, "idRessourceGagne" => $idRessourceGagne, "idGagnant" => $idGagnant]);
+
+            //Vol de la ressource au perdant
+            $stmt = $pdo->prepare('UPDATE players_resources SET quantity = GREATEST(quantity - :ressourceGagne, 0) WHERE player_id=:idPerdant AND resource_id=:idRessourceGagne');
+            $stmt->execute(["ressourceGagne" => $ressourceGagne, "idRessourceGagne" => $idRessourceGagne, "idPerdant" => $idPerdant]);
         }
 
         $pdo->commit();
@@ -188,6 +208,10 @@ $app->get('/api/1.0/combat-tour1/attaquant/{idJoueur}/defenseur/{idDefenseur}', 
         $items['resultat']['orGagne'] = $orAttaquant;
         $items['resultat']['orPerdu'] = $orDefenseur;
         $items['resultat']['combat'] = $idCombat;
+        $items['resultat']['idRessourceGagne'] = $idRessourceAttaquant;
+        $items['resultat']['ressourceGagne'] = $ressourceAttaquant;
+        $items['resultat']['idRessourcePerdu'] = $idRessourceDefenseur;
+        $items['resultat']['ressourcePerdu'] = $ressourceDefenseur;
         if ($idGagnant == $idJoueur) {
             $items['resultat']['gagne'] = true;
         } else {
@@ -284,9 +308,15 @@ $app->get('/api/1.0/combat-tour2/{idCombat}', function ($req, $resp, $args) {
 
     //return buildResponse($resp, $attaquerAttaquant);
 
-    // Or éventuellement gagné pour chaque joueur
+    // Or éventuellement gagné pour chaque joueur au tour 2
     $orAttaquantTour2 = orGagne($attaquerAttaquant);
     $orDefenseurTour2 = orGagne($attaquerDefenseur);
+
+    //Ressources éventuellements gagnées pour chaque joueur au tour 2
+    $volRessourceAttaquant = volRessource($attaquerAttaquant);
+    $volRessourceDefenseur = volRessource($attaquerDefenseur);
+    $ressourceAttaquantTour2 = array_values($volRessourceAttaquant)[0];
+    $ressourceDefenseurTour2 = array_values($volRessourceDefenseur)[0];
 
     // Or gagné au précédent tour
     $statsTour1 = statsTour1($idJoueur, $idDefenseur, $idCombat);
@@ -296,6 +326,7 @@ $app->get('/api/1.0/combat-tour2/{idCombat}', function ($req, $resp, $args) {
         return $resp->withStatus(400);
     }
 
+    //Or gagné au tour 1
     $orAttaquantTour1 = $statsTour1[0]["goldAttaquant"];
     $orDefenseurTour1 = $statsTour1[0]["goldDefenseur"];
 
@@ -303,7 +334,15 @@ $app->get('/api/1.0/combat-tour2/{idCombat}', function ($req, $resp, $args) {
     $orAttaquant = $orAttaquantTour1 + $orAttaquantTour2;
     $orDefenseur = $orDefenseurTour1 + $orDefenseurTour2;
 
-    //Expérience gagnée au précédent tour
+    //Ressources gagnées au tour 1
+    $idRessourceAttaquant = $statsTour1[0]["idRessourceAttaquant"];
+    $ressourceAttaquantTour1 = $statsTour1[0]["ressourceAttaquant"];
+    $idRessourceDefenseur = $statsTour1[0]["idRessourceDefenseur"];
+    $ressourceDefenseurTour1 = $statsTour1[0]["ressourceDefenseur"];
+
+    //Ressources totales gagnées pour l'attaquant et le défenseur
+    $ressourceAttaquant = $ressourceAttaquantTour1 + $ressourceAttaquantTour2;
+    $ressourceDefenseur = $ressourceDefenseurTour1 + $ressourceDefenseurTour2;
 
     //Expérience gagnée au tour 1 pour le joueur
     $experienceAttaquantTour1 = $statsTour1[0]["experienceAttaquant"];
@@ -323,16 +362,22 @@ $app->get('/api/1.0/combat-tour2/{idCombat}', function ($req, $resp, $args) {
         $idPerdant = $idJoueur;
         $orGagne = $orDefenseur;
         $experienceGagne = $experienceDefenseur;
+        $idRessourceGagne = $idRessourceDefenseur;
+        $ressourceGagne = $ressourceDefenseur;
     } elseif ($attaquerAttaquant['perdu'] === false && $attaquerDefenseur['perdu'] === true) {
         $idGagnant = $idJoueur;
         $idPerdant = $idDefenseur;
         $orGagne = $orAttaquant;
         $experienceGagne = $experienceAttaquant;
+        $idRessourceGagne = $idRessourceAttaquant;
+        $ressourceGagne = $ressourceAttaquant;
     } elseif ($attaquerAttaquant['perdu'] === false && $attaquerDefenseur['perdu'] === false) {
         $idGagnant = $idDefenseur;
         $idPerdant = $idJoueur;
         $orGagne = $orDefenseur;
         $experienceGagne = $experienceDefenseur;
+        $idRessourceGagne = $idRessourceDefenseur;
+        $ressourceGagne = $ressourceDefenseur;
     }
 
     //return buildResponse($resp, $attaquerAttaquant);
@@ -352,8 +397,8 @@ $app->get('/api/1.0/combat-tour2/{idCombat}', function ($req, $resp, $args) {
         $pdo->beginTransaction();
 
         /* ----------------- Mise à jour du combat dans la table ---------------- */
-        $stmt = $pdo->prepare('UPDATE combats SET gagnant = :gagnant, goldAttaquant = :orAttaquant, goldDefenseur = :orDefenseur, experienceAttaquant = :experienceAttaquant, experienceDefenseur = :experienceDefenseur WHERE idCombat = :idCombat');
-        $stmt->execute(["orAttaquant" => $orAttaquant, "orDefenseur" => $orDefenseur, "gagnant" => $idGagnant, "experienceAttaquant" => $experienceAttaquant, "experienceDefenseur" => $experienceDefenseur, "idCombat" => $idCombat]);
+        $stmt = $pdo->prepare('UPDATE combats SET gagnant = :gagnant, goldAttaquant = :orAttaquant, goldDefenseur = :orDefenseur, experienceAttaquant = :experienceAttaquant, experienceDefenseur = :experienceDefenseur, idRessourceAttaquant=:idRessourceAttaquant, ressourceAttaquant=:ressourceAttaquant, idRessourceDefenseur=:idRessourceDefenseur, ressourceDefenseur=:ressourceDefenseur WHERE idCombat = :idCombat');
+        $stmt->execute(["orAttaquant" => $orAttaquant, "orDefenseur" => $orDefenseur, "gagnant" => $idGagnant, "experienceAttaquant" => $experienceAttaquant, "experienceDefenseur" => $experienceDefenseur, "idCombat" => $idCombat, "idRessourceAttaquant" => $idRessourceAttaquant, "ressourceAttaquant" => $ressourceAttaquant, "idRessourceDefenseur" => $idRessourceDefenseur, "ressourceDefenseur" => $ressourceDefenseur]);
         /* -------------------------------------------------------------------------- */
 
         /* ----------- Insertions des résultats du tour 2 pour l'attaquant ---------- */
@@ -410,6 +455,14 @@ $app->get('/api/1.0/combat-tour2/{idCombat}', function ($req, $resp, $args) {
         $stmt = $pdo->prepare('UPDATE players SET gold = GREATEST(gold - :orGagne, 0) WHERE id=:idPerdant');
         $stmt->execute(["orGagne" => $orGagne, "idPerdant" => $idPerdant]);
 
+        //Ajout de la ressource au gagnant
+        $stmt = $pdo->prepare('UPDATE players_resources SET quantity = quantity + :ressourceGagne WHERE player_id=:idGagnant AND resource_id=:idRessourceGagne');
+        $stmt->execute(["ressourceGagne" => $ressourceGagne, "idRessourceGagne" => $idRessourceGagne, "idGagnant" => $idGagnant]);
+
+        //Vol de la ressource au perdant
+        $stmt = $pdo->prepare('UPDATE players_resources SET quantity = GREATEST(quantity - :ressourceGagne, 0) WHERE player_id=:idPerdant AND resource_id=:idRessourceGagne');
+        $stmt->execute(["ressourceGagne" => $ressourceGagne, "idRessourceGagne" => $idRessourceGagne, "idPerdant" => $idPerdant]);
+
 
         $pdo->commit();
         /* -------------------------------------------------------------------------- */
@@ -421,6 +474,10 @@ $app->get('/api/1.0/combat-tour2/{idCombat}', function ($req, $resp, $args) {
         $items['resultat']['orGagne'] = $orAttaquant;
         $items['resultat']['orPerdu'] = $orDefenseur;
         $items['resultat']['combat'] = $idCombat;
+        $items['resultat']['idRessourceGagne'] = $idRessourceAttaquant;
+        $items['resultat']['ressourceGagne'] = $ressourceAttaquant;
+        $items['resultat']['idRessourcePerdu'] = $idRessourceDefenseur;
+        $items['resultat']['ressourcePerdu'] = $ressourceDefenseur;
         if ($idGagnant == $idJoueur) {
             $items['resultat']['gagne'] = true;
         } else {
@@ -627,7 +684,7 @@ function statsTour1($idAttaquant, $idDefenseur, $idCombat)
         $pdo = getPDO();
 
         //Id du joueur attaquant
-        $queryID = $pdo->prepare("SELECT `goldAttaquant`, `goldDefenseur`, `experienceAttaquant`, `experienceDefenseur` FROM `combats` WHERE idCombat=:idCombat");
+        $queryID = $pdo->prepare("SELECT `goldAttaquant`, `goldDefenseur`, `experienceAttaquant`, `experienceDefenseur`, `idRessourceAttaquant`, `ressourceAttaquant`, `idRessourceDefenseur`, `ressourceDefenseur` FROM `combats` WHERE idCombat=:idCombat");
         $queryID->execute(["idCombat" => $idCombat]);
         $result = $queryID->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -650,6 +707,36 @@ function checkCombatExist($idCombat)
         $queryID = $pdo->prepare("SELECT `idCombat` FROM `combats` WHERE idCombat=:idCombat");
         $queryID->execute(["idCombat" => $idCombat]);
         $result = $queryID->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    } catch (Exception $e) {
+        return FALSE;
+    }
+}
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                     Vol d'une ressource dans le coffre                     */
+/* -------------------------------------------------------------------------- */
+function volRessource($troupes)
+{
+    try {
+        $pdo = getPDO();
+
+        $queryResources = $pdo->prepare("SELECT `id`, `label` FROM `resources`");
+        $queryResources->execute();
+        $resources = $queryResources->fetchAll(\PDO::FETCH_KEY_PAIR);
+
+        $idResourceStolen = array_rand($resources, 1);
+
+        foreach ($troupes as $key => $value) {
+            $troupes['capaciteTransportTotal'] += $troupes[$key]['capaciteTransport'] * $troupes[$key]['quantite'];
+        }
+
+        $ressourceGagne = $troupes['capaciteTransportTotal'] * RESSOURCE_GAGNE;
+
+        $result = [];
+        $result[$idResourceStolen] = $ressourceGagne;
 
         return $result;
     } catch (Exception $e) {
