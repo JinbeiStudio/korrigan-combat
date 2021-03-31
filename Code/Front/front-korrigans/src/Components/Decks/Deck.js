@@ -44,10 +44,10 @@ const Deck = () => {
                 credentials: 'include'
             })
                 .then(res => {
-                    return res.json();
+                    return res.text();
                 })
                 .then(result => {
-                    if(isSubscribed) {
+                    if(isSubscribed && result) {
                         setDeckJoueur(result[`deck-${type_deck}-0`]);
                         console.log(result);
                         const getIconsVidesDeck = () => {

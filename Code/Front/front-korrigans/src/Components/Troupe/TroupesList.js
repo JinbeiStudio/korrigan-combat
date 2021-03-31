@@ -27,7 +27,7 @@ const TroupesList = ({ troupesJoueur, handleClickTraining }) => {
                 credentials: 'include'
             })
                 .then(res => {
-                return res.json();
+                return res.text();
                 })
                 .then(result => {
                     if(isSubscribed) {
